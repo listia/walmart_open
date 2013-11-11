@@ -20,17 +20,21 @@ module WalmartOpen
       attr_reader attr_name
     end
 
+    attr_reader :raw_attributes
+
     def initialize(attrs)
-      load_known_attributes(attrs)
+      @raw_attributes = attrs
+
+      extract_known_attributes
     end
 
     private
 
-    def load_known_attributes(api_attrs)
+    def extract_known_attributes
       API_ATTRIBUTES_MAPPING.each do |api_attr, attr|
-        next unless api_attrs.has_key?(api_attr)
+        next unless raw_attributes.has_key?(api_attr)
 
-        instance_variable_set("@#{attr}", api_attrs[api_attr])
+        instance_variable_set("@#{attr}", raw_attributes[api_attr])
       end
     end
   end
