@@ -16,7 +16,7 @@ module WalmartOpen
       "productUrl" => "url"
     }
 
-    API_ATTRIBUTES_MAPPING.each_key do |attr_name|
+    API_ATTRIBUTES_MAPPING.each_value do |attr_name|
       attr_reader attr_name
     end
 
