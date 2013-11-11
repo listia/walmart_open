@@ -4,7 +4,9 @@ module WalmartOpen
   class Config
     attr_accessor :domain,
                   :version,
-                  :api_key,
+                  :product_api_key,
+                  :commerce_api_key,
+                  :commerce_api_secret,
                   :calls_per_second
 
     def initialize(options = {})
@@ -25,7 +27,7 @@ module WalmartOpen
 
     def prepare_params(params)
       params = {
-        api_key: api_key,
+        api_key: product_api_key,
         format: "json"
       }.merge(params || {})
 
