@@ -6,7 +6,15 @@ module WalmartOpen
     attr_reader :params
 
     def submit(config)
-      parse_response(HTTParty.get(config.build_url(path, params), verify: false))
+      parse_response(HTTParty.get(config.build_url(type, path, params), request_options))
+    end
+
+    def request_options
+      { verify: false }
+    end
+
+    def type
+      @type || :product
     end
 
     private
