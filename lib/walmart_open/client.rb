@@ -9,7 +9,7 @@ module WalmartOpen
     attr_reader :manager
     attr_reader :config
 
-    def initialize(config_attrs)
+    def initialize(config_attrs = {})
       @config = Config.new(config_attrs)
       @manager = RequestManager.new(config)
 

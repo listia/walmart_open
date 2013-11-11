@@ -1,14 +1,16 @@
+require "walmart_open/request"
+
 module WalmartOpen
   module Requests
-    class Search < Request
-      def initialize(item_id, params = {})
+    class Taxonomy < Request
+      def initialize
         @path = "taxonomy"
-        @params = params
       end
 
       private
 
       def parse_response(response)
+        response
       end
     end
   end

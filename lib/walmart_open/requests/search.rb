@@ -1,3 +1,5 @@
+require "walmart_open/request"
+
 module WalmartOpen
   module Requests
     class Search < Request
