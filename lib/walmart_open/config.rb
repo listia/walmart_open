@@ -28,7 +28,7 @@ module WalmartOpen
       )
 
       pairs = params.map do |key, value|
-        key = key.gsub(/_([a-z])/i) { $1.upcase }
+        key = key.to_s.gsub(/_([a-z])/i) { $1.upcase }
         [key, value]
       end
       Hash[pairs]
