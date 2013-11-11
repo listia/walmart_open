@@ -10,7 +10,7 @@ module WalmartOpen
       private
 
       def parse_response(response)
-        response.parsed_response
+        response.parsed_response["categories"]
       end
     end
   end
