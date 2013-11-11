@@ -1,4 +1,5 @@
 require "walmart_open/request"
+require "walmart_open/item"
 
 module WalmartOpen
   module Requests
@@ -11,7 +12,7 @@ module WalmartOpen
       private
 
       def parse_response(response)
-        response
+        Item.new(response.parsed_response)
       end
     end
   end
