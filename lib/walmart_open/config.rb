@@ -4,11 +4,13 @@ module WalmartOpen
   class Config
     attr_accessor :domain,
                   :version,
-                  :api_key
+                  :api_key,
+                  :calls_per_second
 
     def initialize(options = {})
       self.domain    = "walmartlabs.api.mashery.com"
       self.version   = "v1"
+      self.calls_per_second = 5
 
       options.each do |key, value|
         public_send("#{key}=", value)
