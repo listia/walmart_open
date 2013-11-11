@@ -22,10 +22,10 @@ module WalmartOpen
     private
 
     def prepare_params(params)
-      params = (params || {}).reverse_merge(
+      params = {
         api_key: api_key,
         format: "json"
-      )
+      }.merge(params || {})
 
       pairs = params.map do |key, value|
         key = key.to_s.gsub(/_([a-z])/i) { $1.upcase }
