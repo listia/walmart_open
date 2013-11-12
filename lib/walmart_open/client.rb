@@ -3,6 +3,8 @@ require "walmart_open/request_manager"
 require "walmart_open/requests/search"
 require "walmart_open/requests/lookup"
 require "walmart_open/requests/taxonomy"
+require "walmart_open/requests/oauth_token"
+require "walmart_open/requests/order"
 
 module WalmartOpen
   class Client
@@ -12,6 +14,8 @@ module WalmartOpen
     def initialize(config_attrs = {})
       @config = Config.new(config_attrs)
       @manager = RequestManager.new(config)
+
+      @commerce_token = nil
 
       yield config if block_given?
     end
@@ -26,6 +30,14 @@ module WalmartOpen
 
     def taxonomy
       manager.request(Requests::Taxonomy.new)
+    end
+
+    def order(item_id)
+      if !@commerce_token || @commerce_token.expired?
+        @commerce_token = manager.request(Requests::OAuthToken.new)
+      end
+
+      #manager.request(Requests::Order.new(item_id, @commerce_token))
     end
   end
 end

@@ -41,11 +41,13 @@ module WalmartOpen
     private
 
     def prepare_params(type, params)
+      params ||= {}
+
       if type == :product
         params = {
           api_key: product_api_key,
           format: "json"
-        }.merge(params || {})
+        }.merge(params)
       end
 
       pairs = params.map do |key, value|
