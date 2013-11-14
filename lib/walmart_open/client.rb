@@ -10,12 +10,11 @@ module WalmartOpen
   class Client
     attr_reader :connection
     attr_reader :config
+    attr_reader :auth_token
 
     def initialize(config_attrs = {})
       @config = Config.new(config_attrs)
       @connection = ConnectionManager.new(self)
-
-      @auth_token = nil
 
       yield config if block_given?
     end
@@ -33,11 +32,17 @@ module WalmartOpen
     end
 
     def order(item_id)
-      if !@auth_token|| @auth_token.expired?
-        @auth_token = connection.request(Requests::Token.new)
-      end
+      authenticate!
 
       #connection.request(Requests::Order.new(item_id, @auth_token))
+    end
+
+    private
+
+    def authenticate!
+      if !@auth_token || @auth_token.expired?
+        @auth_token = connection.request(Requests::Token.new)
+      end
     end
   end
 end
