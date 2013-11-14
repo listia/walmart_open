@@ -1,19 +1,19 @@
 module WalmartOpen
   class AuthToken
-    TOKEN_LIFE = 600 # seconds; 10 minutes
-
     attr_reader :token_type,
                 :access_token,
-                :time
+                :time,
+                :expiration_time
 
     def initialize(attrs, grant_time = Time.now)
+      @expiration_time = grant_time + attrs["expires_in"]
       @token_type = attrs["token_type"]
       @access_token = attrs["access_token"]
       @time = grant_time
     end
 
     def expired?
-      Time.now - @time >= TOKEN_LIFE
+      Time.now >= expiration_time
     end
 
     def authorization_header
