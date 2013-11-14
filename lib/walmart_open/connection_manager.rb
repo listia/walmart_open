@@ -1,5 +1,5 @@
 module WalmartOpen
-  class RequestManager
+  class ConnectionManager
     def initialize(client)
       @client = client
       @calls = {}
