@@ -2,6 +2,10 @@ require "builder"
 
 module WalmartOpen
   class OrderXSDBuilder
+    def initialize(order_information)
+      @order_information = order_information
+    end
+
     def build
       schema(Builder::XmlMarkup.new) do |xml|
         documentation(xml)

@@ -31,10 +31,10 @@ module WalmartOpen
       connection.request(Requests::Taxonomy.new)
     end
 
-    def order(item_id)
+    def order(item_id, params = {})
       authenticate!
 
-      connection.request(Requests::Order.new(item_id))
+      connection.request(Requests::Order.new(item_id, params))
     end
 
     private

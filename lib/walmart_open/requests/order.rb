@@ -6,8 +6,9 @@ require "base64"
 module WalmartOpen
   module Requests
     class Order < CommerceRequest
-      def initialize(item_id)
+      def initialize(item_id, params = {})
         self.path = "orders/place"
+        self.params = params
       end
 
       private

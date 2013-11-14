@@ -12,6 +12,8 @@ module WalmartOpen
       @query = response["query"]
       @total = response["totalResults"]
       @start = response["start"]
+      # TODO: set the page!
+      # @page = ...
 
       @items = []
 
