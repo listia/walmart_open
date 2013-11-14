@@ -37,7 +37,7 @@ describe WalmartOpen::Client do
         expect(params_arg).to eq(params)
         request
       end
-      expect(client.manager).to receive(:request).with(request)
+      expect(client.connection).to receive(:request).with(request)
 
       client.search(query, params)
     end
@@ -55,7 +55,7 @@ describe WalmartOpen::Client do
         expect(params_arg).to eq(params)
         request
       end
-      expect(client.manager).to receive(:request).with(request)
+      expect(client.connection).to receive(:request).with(request)
 
       client.lookup(item_id, params)
     end
@@ -67,7 +67,7 @@ describe WalmartOpen::Client do
       request = double
 
       expect(WalmartOpen::Requests::Taxonomy).to receive(:new).and_return(request)
-      expect(client.manager).to receive(:request).with(request)
+      expect(client.connection).to receive(:request).with(request)
 
       client.taxonomy
     end
