@@ -11,6 +11,8 @@ module WalmartOpen
                   :commerce_version,
                   :commerce_api_key,
                   :commerce_api_secret,
+                  :commerce_private_key,
+                  :commerce_private_key_password,
                   :commerce_calls_per_second
 
     def initialize(options = {})
@@ -30,6 +32,10 @@ module WalmartOpen
       options.each do |key, value|
         public_send("#{key}=", value)
       end
+    end
+
+    def private_key
+      @private_key ||= OpenSSL::PKey.read(commerce_private_key, commerce_private_key_password)
     end
   end
 end
