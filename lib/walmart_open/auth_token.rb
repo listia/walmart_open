@@ -13,7 +13,8 @@ module WalmartOpen
     end
 
     def expired?
-      Time.now >= expiration_time
+      buffer = 30 # seconds
+      Time.now + buffer >= expiration_time
     end
 
     def authorization_header
