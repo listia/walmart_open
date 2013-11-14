@@ -3,7 +3,7 @@ require "walmart_open/connection_manager"
 require "walmart_open/requests/search"
 require "walmart_open/requests/lookup"
 require "walmart_open/requests/taxonomy"
-require "walmart_open/requests/oauth_token"
+require "walmart_open/requests/token"
 require "walmart_open/requests/order"
 
 module WalmartOpen
@@ -15,7 +15,7 @@ module WalmartOpen
       @config = Config.new(config_attrs)
       @connection = ConnectionManager.new(self)
 
-      @commerce_token = nil
+      @auth_token = nil
 
       yield config if block_given?
     end
@@ -33,11 +33,11 @@ module WalmartOpen
     end
 
     def order(item_id)
-      if !@commerce_token || @commerce_token.expired?
-        @commerce_token = connection.request(Requests::OAuthToken.new)
+      if !@auth_token|| @auth_token.expired?
+        @auth_token = connection.request(Requests::Token.new)
       end
 
-      #connection.request(Requests::Order.new(item_id, @commerce_token))
+      #connection.request(Requests::Order.new(item_id, @auth_token))
     end
   end
 end

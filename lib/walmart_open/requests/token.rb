@@ -1,9 +1,9 @@
 require "walmart_open/commerce_request"
-require "walmart_open/commerce_token"
+require "walmart_open/auth_token"
 
 module WalmartOpen
   module Requests
-    class OAuthToken < CommerceRequest
+    class Token < CommerceRequest
       def initialize
         self.path = "oauth2/token"
       end
@@ -23,7 +23,7 @@ module WalmartOpen
       end
 
       def parse_response(response)
-        CommerceToken.new(response.parsed_response, Time.parse(response.headers["date"]))
+        AuthToken.new(response.parsed_response, Time.parse(response.headers["date"]))
       end
     end
   end

@@ -1,5 +1,5 @@
 module WalmartOpen
-  class CommerceToken
+  class AuthToken
     TOKEN_LIFE = 600 # seconds; 10 minutes
 
     attr_reader :token_type,
