@@ -1,12 +1,12 @@
-require "walmart_open/request"
+require "walmart_open/product_request"
 require "walmart_open/search_results"
 
 module WalmartOpen
   module Requests
-    class Search < Request
+    class Search < ProductRequest
       def initialize(query, params = {})
-        @path = "search"
-        @params = params.merge(query: query)
+        self.path = "search"
+        self.params = params.merge(query: query)
       end
 
       private

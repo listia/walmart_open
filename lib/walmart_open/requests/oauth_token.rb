@@ -1,22 +1,20 @@
-require "walmart_open/request"
+require "walmart_open/commerce_request"
 require "walmart_open/commerce_token"
 
 module WalmartOpen
   module Requests
-    class OAuthToken < Request
+    class OAuthToken < CommerceRequest
       def initialize
-        @path = "oauth2/token"
-        @type = :commerce
-        @request_method = :post
+        self.path = "oauth2/token"
       end
 
       private
 
-      def request_options(config)
+      def request_options(client)
         {
           basic_auth: {
-            username: config.commerce_api_key,
-            password: config.commerce_api_secret
+            username: client.config.commerce_api_key,
+            password: client.config.commerce_api_secret
           },
           body: {
             grant_type: "client_credentials"

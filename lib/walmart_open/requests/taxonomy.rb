@@ -1,10 +1,10 @@
-require "walmart_open/request"
+require "walmart_open/product_request"
 
 module WalmartOpen
   module Requests
-    class Taxonomy < Request
+    class Taxonomy < ProductRequest
       def initialize
-        @path = "taxonomy"
+        self.path = "taxonomy"
       end
 
       private

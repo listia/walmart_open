@@ -1,10 +1,9 @@
-require "walmart_open/request"
+require "walmart_open/commerce_request"
 
 module WalmartOpen
   module Requests
-    class Order < Request
+    class Order < CommerceRequest
       def initialize(item_id, token)
-        @type = :commerce
       end
 
       private

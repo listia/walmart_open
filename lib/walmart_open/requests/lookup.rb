@@ -1,12 +1,12 @@
-require "walmart_open/request"
+require "walmart_open/product_request"
 require "walmart_open/item"
 
 module WalmartOpen
   module Requests
-    class Lookup < Request
+    class Lookup < ProductRequest
       def initialize(item_id, params = {})
-        @path = "items/#{item_id}"
-        @params = params
+        self.path = "items/#{item_id}"
+        self.params = params
       end
 
       private

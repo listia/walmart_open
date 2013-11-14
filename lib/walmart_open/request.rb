@@ -1,31 +1,57 @@
 require "httparty"
+require "uri"
 
 module WalmartOpen
   class Request
-    attr_reader :path
-    attr_reader :params
+    attr_reader :path, :params
 
-    def submit(config)
-      parse_response(HTTParty.public_send(request_method, config.build_url(type, path, params), request_options(config)))
-    end
+    def submit(client)
+      raise "@path must be specified" unless path
 
-    def type
-      @type || :product
-    end
+      response = HTTParty.public_send(request_method, build_url(client), request_options(client))
 
-    def request_method
-      @request_method || :get
+      parse_response(response)
     end
 
     private
 
-    def request_options(config)
-      { verify: false }
+    attr_writer :path, :params
+
+    def request_method
+      :get
+    end
+
+    def build_url(client)
+      raise NotImplementedError, "build_url must be implemented by subclass"
+    end
+
+    def build_params(client)
+      # noop
+    end
+
+    def request_options(client)
+      {}
     end
 
     # Subclasses can override this method to return a different response.
     def parse_response(response)
       response
+    end
+
+    def params_to_query_string(params_hash)
+      params_hash = convert_param_keys(params_hash || {})
+      query_str = URI.encode_www_form(params_hash)
+      query_str.prepend("?") unless query_str.size.zero?
+      query_str
+    end
+
+    # Converts foo_bar_param to fooBarParam.
+    def convert_param_keys(underscored_params)
+      pairs = underscored_params.map do |key, value|
+        key = key.to_s.gsub(/_([a-z])/i) { $1.upcase }
+        [key, value]
+      end
+      Hash[pairs]
     end
   end
 end

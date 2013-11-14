@@ -1,22 +1,21 @@
 module WalmartOpen
   class RequestManager
-    def initialize(config)
-      @config = config
-      @calls = {
-        product: [],
-        commerce: []
-      }
+    def initialize(client)
+      @client = client
+      @calls = {}
     end
 
     def request(request_obj)
-      throttle(request_obj.type) do
-        response = request_obj.submit(@config)
+      throttle(request_obj) do
+        request_obj.submit(@client)
       end
     end
 
     private
 
-    def throttle(type)
+    def throttle(request_obj)
+      type = request_type(request_obj)
+      @calls[type] ||= []
       calls = @calls[type]
 
       now = Time.now
@@ -33,8 +32,16 @@ module WalmartOpen
       ret_val
     end
 
+    def request_type(request_obj)
+      case request_obj
+        when ProductRequest  then :product
+        when CommerceRequest then :commerce
+        else raise "Unknown request type"
+      end
+    end
+
     def calls_per_second(type)
-      @config.public_send("#{type}_calls_per_second")
+      @client.config.public_send("#{type}_calls_per_second")
     end
   end
 end

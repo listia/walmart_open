@@ -13,7 +13,7 @@ module WalmartOpen
 
     def initialize(config_attrs = {})
       @config = Config.new(config_attrs)
-      @manager = RequestManager.new(config)
+      @manager = RequestManager.new(self)
 
       @commerce_token = nil
 
