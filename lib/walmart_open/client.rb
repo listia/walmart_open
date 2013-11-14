@@ -34,7 +34,7 @@ module WalmartOpen
     def order(item_id)
       authenticate!
 
-      #connection.request(Requests::Order.new(item_id, @auth_token))
+      connection.request(Requests::Order.new(item_id))
     end
 
     private
