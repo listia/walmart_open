@@ -3,6 +3,8 @@ require "walmart_open/client"
 require "walmart_open/config"
 require "walmart_open/requests/search"
 
+require 'ruby-debug'
+
 describe WalmartOpen::Client do
   context ".new" do
     context "when block is given" do
@@ -56,7 +58,6 @@ describe WalmartOpen::Client do
         request
       end
       expect(client.connection).to receive(:request).with(request)
-
       client.lookup(item_id, params)
     end
   end
@@ -70,6 +71,29 @@ describe WalmartOpen::Client do
       expect(client.connection).to receive(:request).with(request)
 
       client.taxonomy
+    end
+  end
+
+  context "#order" do
+    it "delegates the request and returns the response" do
+      client = WalmartOpen::Client.new
+      request = double
+      item_id = double
+      params = double
+
+      auth_token = double
+
+      expect(WalmartOpen::Requests::Order).to receive(:new) do |item_id_arg, params_arg|
+        expect(item_id_arg).to eq(item_id)
+        expect(params_arg).to eq(params)
+        request
+      end
+
+      expect(WalmartOpen::Requests::Token).to receive(:new).and_return(auth_token)
+
+      expect(client.connection).to receive(:request).with(auth_token).and_return(auth_token)
+      expect(client.connection).to receive(:request).with(request)
+      client.order(item_id, params)
     end
   end
 end
