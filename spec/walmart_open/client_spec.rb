@@ -3,8 +3,6 @@ require "walmart_open/client"
 require "walmart_open/config"
 require "walmart_open/requests/search"
 
-require 'ruby-debug'
-
 describe WalmartOpen::Client do
   context ".new" do
     context "when block is given" do
