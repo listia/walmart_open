@@ -56,6 +56,7 @@ describe WalmartOpen::Client do
         request
       end
       expect(client.connection).to receive(:request).with(request)
+
       client.lookup(item_id, params)
     end
   end
