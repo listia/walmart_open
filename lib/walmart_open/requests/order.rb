@@ -36,7 +36,7 @@ module WalmartOpen
       end
 
       def build_xsd
-        OrderXSDBuilder.new.build
+        OrderXSDBuilder.new(params).build
       end
 
       def sign(key, data)

@@ -15,12 +15,15 @@ module WalmartOpen
         payment(xml)
         shipping_address(xml)
 
-        xml.partnerOrderId("??")
-        xml.partnerOrderTime("??")
+        xml.partnerOrderId(order_information[:partner_order_id])
+        xml.partnerOrderTime(order_information[:partner_order_time])
 
         xml.items do |xml|
-          item(xml)
+          order_information[:items].each do |item_information|
+            item(xml, item_information)
+          end
         end
+
         xml.target!
       end
 
@@ -47,12 +50,12 @@ module WalmartOpen
       end
     end
 
-    def item(xml)
+    def item(xml, item_information)
       xml.item do |xml|
-        xml.itemId(order_information[:item_id])
-        xml.quantity(1)
-        xml.itemPrice("??")
-        xml.shippingPrice("??")
+        xml.itemId(item_information[:item_id])
+        xml.quantity(item_information[:quantity])
+        xml.itemPrice(item_information[:item_price])
+        xml.shippingPrice(item_information[:shipping_price])
       end
     end
   end
