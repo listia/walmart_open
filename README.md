@@ -34,7 +34,7 @@ Or install it yourself as:
 ```ruby
 require "walmart_open"
 
-client = Walmart::Client.new do |config|
+client = WalmartOpen::Client.new do |config|
   ## Product API
   config.product_api_key = "GggS6aPxDteRCyRxYnqz9bPp"
 
