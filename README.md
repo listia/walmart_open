@@ -12,6 +12,7 @@ As of right now, the Commerce API is [only available to select partners](https:/
 - API Key
 - API Secret
 - Generated Private/Public Key for message signing. You will need to give them your public key before proceeding.
+- A billing record id; Provided to you by Walmart when you give them your public key.
 - A [walmart.com](http://www.walmart.com) account that is connected to your Walmart Open account.
 
 ## Installation
@@ -40,12 +41,12 @@ client = WalmartOpen::Client.new do |config|
 
   # This value defaults to 5.
   config.product_calls_per_second = 4
-  
+
   ## Commerce API
   config.commerce_api_key = "7XQLSmhqTXJHQ5xdGG7ZUh8d"
   config.commerce_api_secret = "Mm5BX4c7QC"
   config.commerce_private_key = File.read("/path/to/your/private/key/file")
-  
+
   # This value defaults to 2.
   commerce_calls_per_second = 1
 
