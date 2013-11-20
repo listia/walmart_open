@@ -1,26 +1,28 @@
 require "walmart_open/commerce_request"
-require "walmart_open/order_xsd_builder"
+require "walmart_open/order_xml_builder"
+require "walmart_open/order_results"
 require "openssl"
 require "base64"
 
 module WalmartOpen
   module Requests
-    class Order < CommerceRequest
-      def initialize(item_id, params = {})
+    class PlaceOrder < CommerceRequest
+      attr_accessor :order
+
+      def initialize(order)
         self.path = "orders/place"
-        self.params = params
+        @order = order
       end
 
       private
 
       def parse_response(response)
-        response
+        OrderResults.new(response.parsed_response)
       end
 
       def request_options(client)
         body = build_xsd
         signature = client.config.debug ? "FAKE_SIGNATURE" : sign(client.config.private_key, body)
-
         {
           headers: {
             "Authorization" => client.auth_token.authorization_header,
@@ -36,7 +38,7 @@ module WalmartOpen
       end
 
       def build_xsd
-        OrderXSDBuilder.new(params).build
+        OrderXMLBuilder.new(order).build
       end
 
       def sign(key, data)

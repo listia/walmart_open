@@ -4,7 +4,7 @@ require "walmart_open/requests/search"
 require "walmart_open/requests/lookup"
 require "walmart_open/requests/taxonomy"
 require "walmart_open/requests/token"
-require "walmart_open/requests/order"
+require "walmart_open/requests/place_order"
 
 module WalmartOpen
   class Client
@@ -31,10 +31,10 @@ module WalmartOpen
       connection.request(Requests::Taxonomy.new)
     end
 
-    def order(item_id, params = {})
+    def order(order_info)
       authenticate!
 
-      connection.request(Requests::Order.new(item_id, params))
+      connection.request(Requests::PlaceOrder.new(order_info))
     end
 
     private

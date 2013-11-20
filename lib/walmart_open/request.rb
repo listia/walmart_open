@@ -10,6 +10,7 @@ module WalmartOpen
 
       response = HTTParty.public_send(request_method, build_url(client), request_options(client))
 
+      verify_response(response)
       parse_response(response)
     end
 
@@ -36,6 +37,12 @@ module WalmartOpen
     # Subclasses can override this method to return a different response.
     def parse_response(response)
       response
+    end
+
+    def verify_response(response)
+      unless response.success?
+        raise WalmartOpen::AuthenticationError, response.parsed_response.inspect
+      end
     end
 
     def params_to_query_string(params_hash)

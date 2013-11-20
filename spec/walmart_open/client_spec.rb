@@ -2,6 +2,7 @@ require "spec_helper"
 require "walmart_open/client"
 require "walmart_open/config"
 require "walmart_open/requests/search"
+require "walmart_open/order"
 
 describe WalmartOpen::Client do
   context ".new" do
@@ -77,22 +78,17 @@ describe WalmartOpen::Client do
     it "delegates the request and returns the response" do
       client = WalmartOpen::Client.new
       request = double
-      item_id = double
-      params = double
+      order_info = double
 
       auth_token = double
 
-      expect(WalmartOpen::Requests::Order).to receive(:new) do |item_id_arg, params_arg|
-        expect(item_id_arg).to eq(item_id)
-        expect(params_arg).to eq(params)
-        request
-      end
-
+      expect(WalmartOpen::Requests::PlaceOrder).to receive(:new).and_return(request)
       expect(WalmartOpen::Requests::Token).to receive(:new).and_return(auth_token)
-
       expect(client.connection).to receive(:request).with(auth_token).and_return(auth_token)
       expect(client.connection).to receive(:request).with(request)
-      client.order(item_id, params)
+
+      client.order(order_info)
     end
   end
+
 end
