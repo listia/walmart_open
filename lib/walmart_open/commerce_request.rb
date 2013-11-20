@@ -11,6 +11,7 @@ module WalmartOpen
     def build_url(client)
       url = "https://#{client.config.commerce_domain}"
       url << "/#{client.config.commerce_version}"
+      url << "/qa" if client.config.debug
       url << "/#{path}"
       url << params_to_query_string(build_params(client))
     end
