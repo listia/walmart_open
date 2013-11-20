@@ -18,7 +18,7 @@ module WalmartOpen
     end
 
     def authorization_header
-      "#{token_type} #{access_token}"
+      "#{token_type.capitalize} #{access_token}"
     end
   end
 end
