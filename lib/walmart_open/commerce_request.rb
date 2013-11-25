@@ -15,5 +15,9 @@ module WalmartOpen
       url << "/#{path}"
       url << params_to_query_string(build_params(client))
     end
+
+    def parse_response(response)
+      OrderResults.new(response.parsed_response)
+    end
   end
 end
