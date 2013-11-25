@@ -1,5 +1,6 @@
 require "walmart_open/product_request"
 require "walmart_open/item"
+require "walmart_open/not_found_error"
 
 module WalmartOpen
   module Requests
@@ -13,6 +14,16 @@ module WalmartOpen
 
       def parse_response(response)
         Item.new(response.parsed_response)
+      end
+
+      def verify_response(response)
+        unless response.success?
+          if response.code == 400
+            raise WalmartOpen::NotFoundError, response.parsed_response.inspect
+          else
+            raise WalmartOpen::AuthenticationError, response.parsed_response.inspect
+          end
+        end
       end
     end
   end

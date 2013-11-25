@@ -26,14 +26,6 @@ module WalmartOpen
       @error = nil
       @raw_attributes = attrs
       extract_known_attributes
-
-      if attrs["errors"]
-        @error = {code: attrs["errors"].first["code"], message: attrs["errors"].first["message"]}
-      end
-    end
-
-    def error?
-      !@error.nil?
     end
 
     private

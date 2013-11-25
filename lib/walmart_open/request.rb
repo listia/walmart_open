@@ -1,5 +1,6 @@
 require "httparty"
 require "uri"
+require 'walmart_open/authentication_error'
 
 module WalmartOpen
   class Request
