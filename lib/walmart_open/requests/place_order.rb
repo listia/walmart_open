@@ -1,8 +1,11 @@
 require "walmart_open/commerce_request"
 require "walmart_open/order_xml_builder"
 require "walmart_open/order_results"
+require "walmart_open/order_error"
+require "walmart_open/authentication_error"
 require "openssl"
 require "base64"
+
 
 module WalmartOpen
   module Requests
@@ -18,6 +21,16 @@ module WalmartOpen
 
       def parse_response(response)
         OrderResults.new(response.parsed_response)
+      end
+
+      def verify_response(response)
+        unless response.success?
+          if response.code == 400
+            raise WalmartOpen::OrderError, response.parsed_response.inspect
+          else
+            raise WalmartOpen::AuthenticationError, response.parsed_response.inspect
+          end
+        end
       end
 
       def request_options(client)

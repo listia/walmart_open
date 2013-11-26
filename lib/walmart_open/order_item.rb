@@ -11,7 +11,7 @@ module WalmartOpen
     end
 
     def valid?
-     item_id && quantity && item_price && shipping_price
+      !((item_id && quantity && item_price && shipping_price).nil?)
     end
   end
 end

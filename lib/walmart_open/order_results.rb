@@ -21,10 +21,10 @@ module WalmartOpen
 
         @items = []
         if response["items"] && response["items"]["item"]
-          if !response["items"]["item"].is_a?(Array)
-            items = [response["items"]["item"]]
-          else
+          if response["items"]["item"].is_a?(Array)
             items = response["items"]["item"]
+          else
+            items = [response["items"]["item"]]
           end
           items.each do | item |
             @items << OrderedItem.new(item)

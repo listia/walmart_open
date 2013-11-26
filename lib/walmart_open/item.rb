@@ -20,10 +20,9 @@ module WalmartOpen
       attr_reader attr_name
     end
 
-    attr_reader :raw_attributes, :error
+    attr_reader :raw_attributes
 
     def initialize(attrs)
-      @error = nil
       @raw_attributes = attrs
       extract_known_attributes
     end
