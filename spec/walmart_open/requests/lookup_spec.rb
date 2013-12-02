@@ -1,8 +1,7 @@
 require "spec_helper"
 require "walmart_open/requests/lookup"
 require "walmart_open/client"
-require "walmart_open/authentication_error"
-require "walmart_open/item_not_found_error"
+require "walmart_open/errors"
 
 describe WalmartOpen::Requests::Lookup do
 

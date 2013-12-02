@@ -1,7 +1,6 @@
 require "walmart_open/product_request"
 require "walmart_open/item"
-require "walmart_open/item_not_found_error"
-require "walmart_open/authentication_error"
+require "walmart_open/errors"
 
 module WalmartOpen
   module Requests

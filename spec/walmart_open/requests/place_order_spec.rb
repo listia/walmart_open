@@ -2,8 +2,7 @@ require "spec_helper"
 require "walmart_open/requests/place_order"
 require "walmart_open/order"
 require "walmart_open/client"
-require "walmart_open/order_error"
-require "walmart_open/authentication_error"
+require "walmart_open/errors"
 
 describe WalmartOpen::Requests::PlaceOrder do
 

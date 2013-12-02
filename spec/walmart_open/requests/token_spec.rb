@@ -1,7 +1,7 @@
 require "spec_helper"
 require "walmart_open/requests/token"
 require "walmart_open/client"
-require "walmart_open/authentication_error"
+require "walmart_open/errors"
 
 describe WalmartOpen::Requests::Token do
 

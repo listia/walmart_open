@@ -1,6 +1,6 @@
 require "httparty"
 require "uri"
-require 'walmart_open/authentication_error'
+require "walmart_open/errors"
 
 module WalmartOpen
   class Request
@@ -10,7 +10,6 @@ module WalmartOpen
       raise "@path must be specified" unless path
 
       response = HTTParty.public_send(request_method, build_url(client), request_options(client))
-
       verify_response(response)
       parse_response(response)
     end

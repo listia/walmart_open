@@ -5,7 +5,6 @@ module WalmartOpen
     attr_reader :error, :order_id, :partner_order_id, :items, :total, :shipping, :sales_tax, :surcharge, :raw_attributes
 
     def initialize(attrs)
-      @error = nil
       @raw_attributes = attrs
 
       if attrs["errors"] && attrs["errors"]["error"]

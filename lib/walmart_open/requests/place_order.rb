@@ -1,8 +1,7 @@
 require "walmart_open/commerce_request"
 require "walmart_open/order_xml_builder"
 require "walmart_open/order_results"
-require "walmart_open/order_error"
-require "walmart_open/authentication_error"
+require "walmart_open/errors"
 require "openssl"
 require "base64"
 
