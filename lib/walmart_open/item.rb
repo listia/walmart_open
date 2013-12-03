@@ -13,7 +13,8 @@ module WalmartOpen
       "size" => "size",
       "color" => "color",
       "modelNumber" => "model_number",
-      "productUrl" => "url"
+      "productUrl" => "url",
+      "availableOnline" => "available_online"
     }
 
     API_ATTRIBUTES_MAPPING.each_value do |attr_name|
