@@ -6,7 +6,7 @@ require "walmart_open/errors"
 describe WalmartOpen::Config do
 
   context "#initialize" do
-    it "default" do
+    it "sets default configs" do
       config = WalmartOpen::Config.new
 
       expect(config.debug).to be(false)
@@ -18,7 +18,7 @@ describe WalmartOpen::Config do
       expect(config.commerce_calls_per_second).to be(2)
     end
 
-    it "override default" do
+    it "allows setting configs" do
       config = WalmartOpen::Config.new({debug: true, product_domain: "test",
                 commerce_domain: "test", product_version: "test",
                 commerce_version: "test", product_calls_per_second: 1,

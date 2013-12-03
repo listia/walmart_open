@@ -6,7 +6,7 @@ require "walmart_open/errors"
 
 describe WalmartOpen::Requests::PlaceOrder do
 
-  context "when submit" do
+  context "#submit" do
     before do
       order = WalmartOpen::Order.new({billing_id: 1, first_name: "James",
                                       last_name: "Fong", partner_order_id: "44",
@@ -32,7 +32,7 @@ describe WalmartOpen::Requests::PlaceOrder do
       expect(HTTParty).to receive(:public_send).and_return(@response)
     end
 
-    it "success with multiple orders" do
+    it "succeeds with multiple orders" do
       expect(@response).to receive(:success?).and_return(true)
       @attrs = {"response"=>{"orderId"=>"2677911169085",
                               "partnerOrderId"=>"8",
@@ -47,7 +47,7 @@ describe WalmartOpen::Requests::PlaceOrder do
       expect(order.raw_attributes).to eq(@attrs)
     end
 
-    it "success with one order" do
+    it "succeeds with one order" do
       expect(@response).to receive(:success?).and_return(true)
       @attrs = {"response"=>{"orderId"=>"2677913310915", "partnerOrderId"=>"20", "items"=>{"item"=>{"itemId"=>"10371356", "quantity"=>"1", "itemPrice"=>"22.97"}}, "total"=>"29.95", "itemTotal"=>"22.97", "shipping"=>"4.97", "salesTax"=>"2.01", "surcharge"=>"0.00"}}
       expect(@response).to receive(:parsed_response).and_return(@attrs)

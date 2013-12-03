@@ -5,7 +5,7 @@ require "walmart_open/errors"
 
 describe WalmartOpen::Requests::Token do
 
-  context "when submit" do
+  context "#submit" do
     before do
       @token_req = WalmartOpen::Requests::Token.new
       @client = WalmartOpen::Client.new
@@ -13,7 +13,7 @@ describe WalmartOpen::Requests::Token do
       expect(HTTParty).to receive(:public_send).and_return(@response)
     end
 
-    it "success" do
+    it "succeeds" do
       expect(@response).to receive(:success?).and_return(true)
       @attrs = {"token_type"=>"bearer", "mapi"=>"8tbvkxd6gu6zjzp6qbyeewb6", "access_token"=>"k5pzg6jqtetygmrkm5y6qqnr", "expires_in"=>600}
       expect(@response).to receive(:parsed_response).and_return(@attrs)
@@ -21,9 +21,9 @@ describe WalmartOpen::Requests::Token do
       expect(@response).to receive(:headers).and_return(@header_attrs)
 
       token = @token_req.submit(@client)
-      expect(token.token_type).to eq(@attrs["token_type"])
-      expect(token.access_token).to eq(@attrs["access_token"])
-      expect(token.time).to eq(Time.parse(@header_attrs["date"]))
+      expect(token.token_type).to eq("bearer")
+      expect(token.access_token).to eq("k5pzg6jqtetygmrkm5y6qqnr")
+      expect(token.time).to eq(Time.parse("Sun, 01 Dec 2013 07:25:35 GMT"))
     end
 
     it "fails with 403" do

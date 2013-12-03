@@ -3,8 +3,8 @@ require "walmart_open/order_item"
 
 describe WalmartOpen::OrderItem do
 
-  context "when initialize" do
-    it "successfully" do
+  context ".new" do
+    it "sets value correctly" do
       item_id = 10371356
       item_price = 1.23
       order_item = WalmartOpen::OrderItem.new(item_id, item_price)
