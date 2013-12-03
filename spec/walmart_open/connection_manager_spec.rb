@@ -8,63 +8,50 @@ describe WalmartOpen::ConnectionManager do
   context "#request" do
     context "when product request" do
       it "did not sleep as did not exceed calls per second threshold" do
-        t1 = Time.now
         client = WalmartOpen::Client.new({product_calls_per_second: 1})
         connection = WalmartOpen::ConnectionManager.new(client)
-        request_object = double
-        expect(connection).to receive(:request_type).at_least(:once).and_return(:product)
-        expect(request_object).to receive(:submit).at_least(:once).and_return("")
+        request_object = WalmartOpen::ProductRequest.new
+        expect(request_object).to receive(:submit).and_return("").once
+        expect(connection).not_to receive(:sleep)
 
         connection.request(request_object)
-
-        t2 = Time.now
-        expect(t2-t1).to be <= 1
       end
 
       it "slept due to exceeding calls per second threshold" do
-        t1 = Time.now
-        client = WalmartOpen::Client.new({product_calls_per_second: 1})
+        client = WalmartOpen::Client.new({product_calls_per_second: 3})
         connection = WalmartOpen::ConnectionManager.new(client)
-        request_object = double
-        expect(connection).to receive(:request_type).at_least(:once).and_return(:product)
-        expect(request_object).to receive(:submit).at_least(:once).and_return("")
+        request_object = WalmartOpen::ProductRequest.new
+        expect(request_object).to receive(:submit).and_return("").at_least(:once)
+        expect(connection).to receive(:sleep).once
 
-        connection.request(request_object)  # request twice in one second
+        connection.request(request_object)  # request four times in one second
         connection.request(request_object)
-
-        t2 = Time.now
-        expect(t2-t1).to be >= 1
+        connection.request(request_object)
+        connection.request(request_object)
       end
     end
 
     context "when commerce request" do
       it "did not sleep as did not exceed calls per second threshold" do
-        t1 = Time.now
         client = WalmartOpen::Client.new({commerce_calls_per_second: 1})
         connection = WalmartOpen::ConnectionManager.new(client)
-        request_object = double
-        expect(connection).to receive(:request_type).at_least(:once).and_return(:commerce)
-        expect(request_object).to receive(:submit).at_least(:once).and_return("")
-
+        request_object = WalmartOpen::CommerceRequest.new
+        expect(request_object).to receive(:submit).and_return("").once
+        expect(connection).not_to receive(:sleep)
         connection.request(request_object)
-
-        t2 = Time.now
-        expect(t2-t1).to be <= 1
       end
 
       it "slept due to exceeding calls per second threshold" do
-        t1 = Time.now
-        client = WalmartOpen::Client.new({commerce_calls_per_second: 1})
+        client = WalmartOpen::Client.new({commerce_calls_per_second: 3})
         connection = WalmartOpen::ConnectionManager.new(client)
-        request_object = double
-        expect(connection).to receive(:request_type).at_least(:once).and_return(:commerce)
-        expect(request_object).to receive(:submit).at_least(:once).and_return("")
+        request_object = WalmartOpen::CommerceRequest.new
+        expect(request_object).to receive(:submit).and_return("").at_least(:once)
+        expect(connection).to receive(:sleep).once
 
-        connection.request(request_object)   # request twice in one second
+        connection.request(request_object)   # request four times in one second
         connection.request(request_object)
-
-        t2 = Time.now
-        expect(t2-t1).to be >= 1
+        connection.request(request_object)
+        connection.request(request_object)
       end
     end
   end
