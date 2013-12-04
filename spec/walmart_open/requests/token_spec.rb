@@ -4,7 +4,6 @@ require "walmart_open/client"
 require "walmart_open/errors"
 
 describe WalmartOpen::Requests::Token do
-
   context "#submit" do
     before do
       @token_req = WalmartOpen::Requests::Token.new

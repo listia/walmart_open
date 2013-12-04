@@ -4,7 +4,6 @@ require "walmart_open/client"
 require "walmart_open/errors"
 
 describe WalmartOpen::Config do
-
   context "#initialize" do
     it "sets default configs" do
       config = WalmartOpen::Config.new
@@ -32,6 +31,5 @@ describe WalmartOpen::Config do
       expect(config.product_calls_per_second).to be(1)
       expect(config.commerce_calls_per_second).to be(1)
     end
-
   end
 end

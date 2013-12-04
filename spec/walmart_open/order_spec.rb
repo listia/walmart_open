@@ -4,7 +4,14 @@ require "walmart_open/order"
 describe WalmartOpen::Order do
   context "create order" do
     before do
-      @params =  {:billing_id=>1, :first_name=>"James", :last_name=>"Fong", :partner_order_id=>"42", :phone=>"606-478-0850", :partner_order_time => Time.now}
+      @params = {
+        billing_id:         1,
+        first_name:         "James",
+        last_name:          "Fong",
+        partner_order_id:   "42",
+        phone:              "606-478-0850",
+        partner_order_time: Time.now
+      }
       @order = WalmartOpen::Order.new(@params)
     end
 
@@ -21,7 +28,14 @@ describe WalmartOpen::Order do
 
     context "#add_shipping_address" do
       it "sets value correctly" do
-        params =  {:street1=>"Listia Inc, 200 Blossom Ln", :street2=>"street2 test", :city=>"Mountain View", :state=>"CA", :zipcode=>"94043", :country=>"USA"}
+        params = {
+          street1:  "Listia Inc, 200 Blossom Ln",
+          street2:  "street2 test",
+          city:     "Mountain View",
+          state:    "CA",
+          zipcode:  "94043",
+          country:  "USA"
+        }
         @order.add_shipping_address(params)
 
         expect(@order.shipping_address).not_to be_nil

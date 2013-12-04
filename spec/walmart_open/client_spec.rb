@@ -90,5 +90,4 @@ describe WalmartOpen::Client do
       client.order(order_info)
     end
   end
-
 end

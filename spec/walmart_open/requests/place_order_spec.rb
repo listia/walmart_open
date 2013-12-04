@@ -5,7 +5,6 @@ require "walmart_open/client"
 require "walmart_open/errors"
 
 describe WalmartOpen::Requests::PlaceOrder do
-
   context "#submit" do
     before do
       order = WalmartOpen::Order.new({billing_id: 1, first_name: "James",

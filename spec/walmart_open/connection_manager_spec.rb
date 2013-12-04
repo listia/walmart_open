@@ -22,11 +22,10 @@ describe WalmartOpen::ConnectionManager do
         connection = WalmartOpen::ConnectionManager.new(client)
         request_object = WalmartOpen::ProductRequest.new
         expect(request_object).to receive(:submit).and_return("").at_least(:once)
-        expect(connection).to receive(:sleep).with(1).twice  # two requests slept
+        expect(connection).to receive(:sleep).with(1).once  # 1 requests slept
 
         Timecop.freeze(Time.now) do
-          connection.request(request_object)  # request three times in one second
-          connection.request(request_object)
+          connection.request(request_object)  # request two times in one second
           connection.request(request_object)
         end
       end
@@ -47,11 +46,10 @@ describe WalmartOpen::ConnectionManager do
         connection = WalmartOpen::ConnectionManager.new(client)
         request_object = WalmartOpen::CommerceRequest.new
         expect(request_object).to receive(:submit).and_return("").at_least(:once)
-        expect(connection).to receive(:sleep).with(1).twice  # two requests slept
+        expect(connection).to receive(:sleep).with(1).once  # two requests slept
 
         Timecop.freeze(Time.now) do
-          connection.request(request_object)  # request three times in one second
-          connection.request(request_object)
+          connection.request(request_object)  # request two times in one second
           connection.request(request_object)
         end
       end

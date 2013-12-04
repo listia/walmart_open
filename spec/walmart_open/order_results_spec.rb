@@ -2,10 +2,26 @@ require "spec_helper"
 require "walmart_open/order_results"
 
 describe WalmartOpen::OrderResults do
-
   context "#initialize" do
     it "sets value correctly with one order" do
-      attrs = {"response"=>{"orderId"=>"2677921715556", "partnerOrderId"=>"43", "items"=>{"item"=>{"itemId"=>"10371356", "quantity"=>"1", "itemPrice"=>"22.97"}}, "total"=>"29.95", "itemTotal"=>"22.97", "shipping"=>"4.97", "salesTax"=>"2.01", "surcharge"=>"0.00"}}
+      attrs = {
+        "response" => {
+          "orderId" =>"2677921715556",
+          "partnerOrderId"  =>"43",
+          "items"           =>  {
+              "item" => {
+                "itemId"=>"10371356",
+                "quantity"=>"1",
+                "itemPrice"=>"22.97"
+            }
+          },
+          "total"     =>  "29.95",
+          "itemTotal" =>  "22.97",
+          "shipping"  =>"4.97",
+          "salesTax"  =>"2.01",
+          "surcharge" =>"0.00"
+        }
+      }
       res = WalmartOpen::OrderResults.new(attrs)
 
       expect(res.order_id).to eq(attrs["response"]["orderId"])
@@ -20,7 +36,31 @@ describe WalmartOpen::OrderResults do
     end
 
     it "sets value correctly with multiple orders" do
-      attrs = {"response"=>{"orderId"=>"2677922016720", "partnerOrderId"=>"44", "items"=>{"item"=>[{"itemId"=>"20658394", "quantity"=>"1", "itemPrice"=>"12.99"}, {"itemId"=>"10371356", "quantity"=>"1", "itemPrice"=>"22.97"}]}, "total"=>"39.11", "itemTotal"=>"35.96", "shipping"=>"0", "salesTax"=>"3.15", "surcharge"=>"0.00"}}
+      attrs = {
+        "response"  =>  {
+          "orderId" =>  "2677922016720",
+          "partnerOrderId"  =>  "44",
+          "items" =>  {
+            "item"  =>  [
+                {
+                  "itemId"  =>  "20658394",
+                  "quantity"  =>  "1",
+                  "itemPrice" =>"12.99"
+                },
+                {
+                  "itemId"    =>  "10371356",
+                  "quantity"  =>  "1",
+                  "itemPrice" =>  "22.97"
+                }
+              ]
+            },
+            "total" =>  "39.11",
+            "itemTotal" =>  "35.96",
+            "shipping"  =>  "0",
+            "salesTax"  =>  "3.15",
+            "surcharge" =>  "0.00"
+        }
+      }
       res = WalmartOpen::OrderResults.new(attrs)
 
       expect(res.order_id).to eq(attrs["response"]["orderId"])
@@ -34,5 +74,4 @@ describe WalmartOpen::OrderResults do
       expect(res.error?).to eq(false)
     end
   end
-
 end

@@ -4,7 +4,6 @@ require "walmart_open/client"
 require "walmart_open/errors"
 
 describe WalmartOpen::Requests::Search do
-
   context "#submit" do
     before do
       @search_req = WalmartOpen::Requests::Search.new("ipod")

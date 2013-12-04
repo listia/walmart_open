@@ -2,7 +2,6 @@ require "spec_helper"
 require "walmart_open/order_item"
 
 describe WalmartOpen::OrderItem do
-
   context ".new" do
     it "sets value correctly" do
       item_id = 10371356
@@ -16,5 +15,4 @@ describe WalmartOpen::OrderItem do
       expect(order_item.valid?).to eq(true)
     end
   end
-
 end

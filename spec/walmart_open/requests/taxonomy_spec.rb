@@ -4,7 +4,6 @@ require "walmart_open/client"
 require "walmart_open/errors"
 
 describe WalmartOpen::Requests::Taxonomy do
-
   context "#submit" do
     before do
       @taxonomy_req = WalmartOpen::Requests::Taxonomy.new

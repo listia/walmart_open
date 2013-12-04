@@ -2,7 +2,6 @@ require "spec_helper"
 require "walmart_open/shipping_address"
 
 describe WalmartOpen::ShippingAddress do
-
   context "#initialize" do
     it "sets value correctly" do
       attrs = {:street1 => "Listia Inc, 200 Blossom Ln", :street2 => "street2 test", :city => "Mountain View", :state => "CA", :zipcode => "94043", :country => "USA"}
@@ -15,5 +14,4 @@ describe WalmartOpen::ShippingAddress do
       expect(shipping_address.valid?).to eq(true)
     end
   end
-
 end

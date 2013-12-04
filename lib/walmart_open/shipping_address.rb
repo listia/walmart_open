@@ -1,12 +1,12 @@
 module WalmartOpen
   class ShippingAddress
     API_ATTRIBUTES_MAPPING = {
-        :street1 => "street1",
-        :street2 => "street2",
-        :city => "city",
-        :state => "state",
-        :zipcode => "zipcode",
-        :country => "country",
+        street1:  "street1",
+        street2:  "street2",
+        city:     "city",
+        state:    "state",
+        zipcode:  "zipcode",
+        country:  "country",
     }
 
     API_ATTRIBUTES_MAPPING.each_value do |attr_name|
@@ -21,7 +21,7 @@ module WalmartOpen
     end
 
     def valid?
-      !((street1 && city && state && zipcode && country).nil?)
+      !!(street1 && city && state && zipcode && country)
     end
 
     private
