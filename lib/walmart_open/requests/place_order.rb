@@ -23,13 +23,10 @@ module WalmartOpen
       end
 
       def verify_response(response)
-        unless response.success?
-          if response.code == 400
-            raise WalmartOpen::OrderError, response.parsed_response.inspect
-          else
-            raise WalmartOpen::AuthenticationError, response.parsed_response.inspect
-          end
+        if response.code == 400
+          raise WalmartOpen::OrderError, response.parsed_response.inspect
         end
+        super
       end
 
       def request_options(client)

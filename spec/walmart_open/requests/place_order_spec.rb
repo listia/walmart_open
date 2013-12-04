@@ -40,6 +40,7 @@ describe WalmartOpen::Requests::PlaceOrder do
                                                  {"itemId"=>"10371356", "quantity"=>"1",
                                                   "itemPrice"=>"22.97"}]},
                               "total"=>"259.38", "itemTotal"=>"237.96", "shipping"=>"0", "salesTax"=>"21.42", "surcharge"=>"0.00"}}
+      expect(@response).to receive(:code).and_return(200)
       expect(@response).to receive(:parsed_response).and_return(@attrs)
       order = @order_req.submit(@client)
 
@@ -48,7 +49,25 @@ describe WalmartOpen::Requests::PlaceOrder do
 
     it "succeeds with one order" do
       expect(@response).to receive(:success?).and_return(true)
-      @attrs = {"response"=>{"orderId"=>"2677913310915", "partnerOrderId"=>"20", "items"=>{"item"=>{"itemId"=>"10371356", "quantity"=>"1", "itemPrice"=>"22.97"}}, "total"=>"29.95", "itemTotal"=>"22.97", "shipping"=>"4.97", "salesTax"=>"2.01", "surcharge"=>"0.00"}}
+      @attrs = {
+        "response" => {
+          "orderId" =>  "2677913310915",
+          "partnerOrderId" => "20",
+          "items" => {
+            "item" => {
+              "itemId" => "10371356",
+              "quantity" => "1",
+              "itemPrice" => "22.97"
+            }
+          },
+          "total" => "29.95",
+          "itemTotal" => "22.97",
+          "shipping" => "4.97",
+          "salesTax" => "2.01",
+          "surcharge" => "0.00"
+        }
+      }
+      expect(@response).to receive(:code).and_return(200)
       expect(@response).to receive(:parsed_response).and_return(@attrs)
       order = @order_req.submit(@client)
 
@@ -57,9 +76,15 @@ describe WalmartOpen::Requests::PlaceOrder do
 
 
     it "fails with 400" do
-      expect(@response).to receive(:success?).and_return(false)
       expect(@response).to receive(:code).and_return(400)
-      expect(@response).to receive(:parsed_response).and_return({"errors"=>{"error"=>{"code"=>"10020", "message"=>"This order has already been executed"}}})
+      expect(@response).to receive(:parsed_response).and_return({
+        "errors" => {
+          "error" => {
+            "code" => "10020",
+            "message" => "This order has already been executed"
+          }
+        }
+      })
 
       expect{@order_req.submit(@client)}.to raise_error(WalmartOpen::OrderError)
     end
@@ -67,7 +92,12 @@ describe WalmartOpen::Requests::PlaceOrder do
     it "fails with 403" do
       expect(@response).to receive(:success?).and_return(false)
       expect(@response).to receive(:code).and_return(403)
-      expect(@response).to receive(:parsed_response).and_return({"errors"=>[{"code"=>403, "message"=>"Account Inactive"}]})
+      expect(@response).to receive(:parsed_response).and_return({
+        "errors" => [{
+          "code" => 403,
+          "message" => "Account Inactive"
+        }]
+      })
 
       expect{@order_req.submit(@client)}.to raise_error(WalmartOpen::AuthenticationError)
     end

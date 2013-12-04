@@ -1,13 +1,15 @@
 require "spec_helper"
-require "walmart_open/requests/lookup"
+require "walmart_open/request"
 require "walmart_open/client"
 require "walmart_open/errors"
 
-describe WalmartOpen::Requests::Lookup do
+describe WalmartOpen::Request do
   context "#submit" do
     before do
-      @lookup_req = WalmartOpen::Requests::Lookup.new(1)
       @client = WalmartOpen::Client.new
+      @request = WalmartOpen::Request.new
+      expect(@request).to receive(:path).and_return("test_path")
+      expect(@request).to receive(:build_url).and_return("")
       @response = double
       expect(HTTParty).to receive(:public_send).and_return(@response)
     end
@@ -47,26 +49,17 @@ describe WalmartOpen::Requests::Lookup do
         "stock"                   =>  "Available",
         "availableOnline"         =>  true
       }
-      expect(@response).to receive(:parsed_response).and_return(@attrs)
-      expect(@response).to receive(:code).and_return(200)
-      item = @lookup_req.submit(@client)
+      expect(@request).to receive(:parse_response).and_return(@attrs)
+      result = @request.submit(@client)
 
-      expect(item.raw_attributes).to eq(@attrs)
-    end
-
-    it "fails with 400" do
-      expect(@response).to receive(:code).and_return(400)
-      expect(@response).to receive(:parsed_response).and_return({"errors"=>[{"code"=>4002, "message"=>"Invalid itemId"}]})
-
-      expect{@lookup_req.submit(@client)}.to raise_error(WalmartOpen::ItemNotFoundError)
+      expect(result).to eq(@attrs)
     end
 
     it "fails with 403" do
       expect(@response).to receive(:success?).and_return(false)
-      expect(@response).to receive(:code).and_return(403)
       expect(@response).to receive(:parsed_response).and_return({"errors"=>[{"code"=>403, "message"=>"Account Inactive"}]})
 
-      expect{@lookup_req.submit(@client)}.to raise_error(WalmartOpen::AuthenticationError)
+      expect{@request.submit(@client)}.to raise_error(WalmartOpen::AuthenticationError)
     end
   end
 end
