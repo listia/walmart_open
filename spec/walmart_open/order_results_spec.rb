@@ -37,15 +37,15 @@ describe WalmartOpen::OrderResults do
 
     it "sets value correctly with multiple orders" do
       attrs = {
-        "response"  =>  {
-          "orderId" =>  "2677922016720",
-          "partnerOrderId"  =>  "44",
-          "items" =>  {
-            "item"  =>  [
+        "response"  => {
+          "orderId" => "2677922016720",
+          "partnerOrderId" => "44",
+          "items" => {
+            "item"  => [
                 {
-                  "itemId"  =>  "20658394",
-                  "quantity"  =>  "1",
-                  "itemPrice" =>"12.99"
+                  "itemId"    => "20658394",
+                  "quantity"  => "1",
+                  "itemPrice" => "12.99"
                 },
                 {
                   "itemId"    =>  "10371356",
@@ -54,11 +54,11 @@ describe WalmartOpen::OrderResults do
                 }
               ]
             },
-            "total" =>  "39.11",
-            "itemTotal" =>  "35.96",
-            "shipping"  =>  "0",
-            "salesTax"  =>  "3.15",
-            "surcharge" =>  "0.00"
+            "total"     => "39.11",
+            "itemTotal" => "35.96",
+            "shipping"  => "0",
+            "salesTax"  => "3.15",
+            "surcharge" => "0.00"
         }
       }
       res = WalmartOpen::OrderResults.new(attrs)

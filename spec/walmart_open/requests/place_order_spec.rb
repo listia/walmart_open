@@ -6,100 +6,144 @@ require "walmart_open/errors"
 
 describe WalmartOpen::Requests::PlaceOrder do
   context "#submit" do
-    before do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James",
-                                      last_name: "Fong", partner_order_id: "44",
-                                      phone: "606-478-0850"
-                                     }) # partner_order_time: "16:15:47"
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", street2: "street2 test", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(20658394, 12.99, 4.97, 1)
-      @req_token = WalmartOpen::Requests::Token.new
-      @order_req = WalmartOpen::Requests::PlaceOrder.new(order)
-      expect(@order_req).to receive(:request_options).and_return({})
-      @client = WalmartOpen::Client.new do |config|
-        ## Product API
-        config.product_api_key = "123"
-
-        # This value defaults to 5.
-        ## Commerce API
-        config.commerce_api_key = "123"
-        config.commerce_api_secret = "456"
-
-        config.debug = true
-      end
-      @response = double
-      expect(HTTParty).to receive(:public_send).and_return(@response)
+    let(:order_attrs) do
+      {
+        billing_id: 1,
+        first_name: "James",
+        last_name: "Fong",
+        partner_order_id: "44",
+        phone: "606-478-0850"
+      }
     end
 
-    it "succeeds with multiple orders" do
-      expect(@response).to receive(:success?).and_return(true)
-      @attrs = {"response"=>{"orderId"=>"2677911169085",
-                              "partnerOrderId"=>"8",
-                              "items"=>{"item"=>[{"itemId"=>"25174174",
-                                                  "quantity"=>"1", "itemPrice"=>"214.99"},
-                                                 {"itemId"=>"10371356", "quantity"=>"1",
-                                                  "itemPrice"=>"22.97"}]},
-                              "total"=>"259.38", "itemTotal"=>"237.96", "shipping"=>"0", "salesTax"=>"21.42", "surcharge"=>"0.00"}}
-      expect(@response).to receive(:code).and_return(200)
-      expect(@response).to receive(:parsed_response).and_return(@attrs)
-      order = @order_req.submit(@client)
-
-      expect(order.raw_attributes).to eq(@attrs)
-    end
-
-    it "succeeds with one order" do
-      expect(@response).to receive(:success?).and_return(true)
-      @attrs = {
+    let(:multiple_order_response) do
+      {
         "response" => {
-          "orderId" =>  "2677913310915",
-          "partnerOrderId" => "20",
-          "items" => {
-            "item" => {
-              "itemId" => "10371356",
-              "quantity" => "1",
-              "itemPrice" => "22.97"
-            }
-          },
-          "total" => "29.95",
-          "itemTotal" => "22.97",
-          "shipping" => "4.97",
-          "salesTax" => "2.01",
-          "surcharge" => "0.00"
+            "orderId" => "2677911169085",
+            "partnerOrderId" => "8",
+            "items" => {
+                "item" => [
+                    {
+                        "itemId" => "25174174",
+                        "quantity" => "1",
+                        "itemPrice" => "214.99"
+                    },
+                    {
+                        "itemId" => "10371356",
+                        "quantity" => "1",
+                        "itemPrice" => "22.97"
+                    }
+                ]
+            },
+            "total" => "259.38",
+            "itemTotal" => "237.96",
+            "shipping" => "0",
+            "salesTax" => "21.42",
+            "surcharge" => "0.00"
         }
       }
-      expect(@response).to receive(:code).and_return(200)
-      expect(@response).to receive(:parsed_response).and_return(@attrs)
-      order = @order_req.submit(@client)
-
-      expect(order.raw_attributes).to eq(@attrs)
     end
 
-
-    it "fails with 400" do
-      expect(@response).to receive(:code).and_return(400)
-      expect(@response).to receive(:parsed_response).and_return({
-        "errors" => {
-          "error" => {
-            "code" => "10020",
-            "message" => "This order has already been executed"
-          }
+    let(:single_order_response) do
+      {
+        "response" => {
+            "orderId" =>  "2677913310915",
+            "partnerOrderId" => "20",
+            "items" => {
+                "item" => {
+                    "itemId" => "10371356",
+                    "quantity" => "1",
+                    "itemPrice" => "22.97"
+                }
+            },
+            "total" => "29.95",
+            "itemTotal" => "22.97",
+            "shipping" => "4.97",
+            "salesTax" => "2.01",
+            "surcharge" => "0.00"
         }
-      })
-
-      expect{@order_req.submit(@client)}.to raise_error(WalmartOpen::OrderError)
+      }
     end
 
-    it "fails with 403" do
-      expect(@response).to receive(:success?).and_return(false)
-      expect(@response).to receive(:code).and_return(403)
-      expect(@response).to receive(:parsed_response).and_return({
-        "errors" => [{
-          "code" => 403,
-          "message" => "Account Inactive"
-        }]
-      })
+    let(:client) { WalmartOpen::Client.new }
+    let(:order) { WalmartOpen::Order.new(order_attrs) }
+    let(:order_req) { WalmartOpen::Requests::PlaceOrder.new(order) }
+    let(:success_response) { double('success_response', success?: true) }
+    let(:fail_response) { double('fail_response', success?: false) }
 
-      expect{@order_req.submit(@client)}.to raise_error(WalmartOpen::AuthenticationError)
+    before do
+      allow(order_req).to receive(:request_options).and_return({})
+    end
+
+    context "when response is success" do
+      before do
+        allow(HTTParty).to receive(:post).and_return(success_response)
+        allow(success_response).to receive(:code).and_return(200)
+      end
+
+      context "when multiple orders" do
+        before do
+          allow(success_response).to receive(:parsed_response).and_return(multiple_order_response)
+        end
+
+        it "return response" do
+          order = order_req.submit(client)
+          expect(order.raw_attributes).to eq(multiple_order_response)
+        end
+      end
+
+      context "when one order" do
+        before do
+          allow(success_response).to receive(:parsed_response).and_return(single_order_response)
+        end
+
+        it "return response" do
+          order = order_req.submit(client)
+          expect(order.raw_attributes).to eq(single_order_response)
+        end
+      end
+    end
+
+    context "when response is not success" do
+      before do
+        allow(HTTParty).to receive(:post).and_return(fail_response)
+      end
+
+      context "response has http code 400" do
+        before do
+          allow(fail_response).to receive(:code).and_return(400)
+          allow(fail_response).to receive(:parsed_response).and_return({
+            "errors" => {
+                "error" => {
+                    "code" => "10020",
+                    "message" => "This order has already been executed"
+                }
+            }
+          })
+        end
+
+        it "raise order error" do
+          expect{order_req.submit(client)}.to raise_error(WalmartOpen::OrderError)
+        end
+      end
+
+      context "response has http code not 400" do
+        before do
+          allow(fail_response).to receive(:code).and_return(403)
+          allow(fail_response).to receive(:parsed_response).and_return({
+            "errors" => [{
+            "code" => 403,
+            "message" => "Account Inactive"
+            }]
+          })
+        end
+
+        it "raise authentication error" do
+          expect {
+            order_req.submit(client)
+          }.to raise_error(WalmartOpen::AuthenticationError)
+        end
+      end
     end
   end
 end

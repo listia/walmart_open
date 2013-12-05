@@ -57,67 +57,62 @@ describe WalmartOpen::Order do
   end
 
   context "#valid?" do
-    it "valid when required fields are provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to be_valid
+    let(:valid_attrs) do
+      {
+        first_name: "James",
+        billing_id: 1
+      }
     end
 
-    it "not valid when required billing_id not provided" do
-      order = WalmartOpen::Order.new({first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
+    let(:order) do
+      WalmartOpen::Order.new(valid_attrs).tap do |order|
+        order.add_shipping_address({})
+        order.add_item(10371356, 27.94)
+      end
     end
 
-    it "not valid when required first_name not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
+    context "when shipping address is valid" do
+      before do
+        allow(order.shipping_address).to receive(:valid?).and_return(true)
+      end
+
+      context "when order attributes are valid" do
+        context "when items are valid" do
+          it "returns true" do
+            expect(order).to be_valid
+          end
+        end
+
+        context "when items are not valid" do
+          before do
+            order.add_item(12345)
+          end
+
+          it "returns false" do
+            expect(order).to_not be_valid
+          end
+        end
+      end
+
+      context "when order attributes are not valid" do
+        before do
+          order.first_name = nil
+        end
+
+        it "returns false" do
+          expect(order).to_not be_valid
+        end
+      end
     end
 
-    it "not valid when required street1 not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
-    end
+    context "when shipping address is not valid" do
+      before do
+        allow(order.shipping_address).to receive(:valid?).and_return(false)
+      end
 
-    it "not valid when required city not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
-    end
-
-    it "not valid when required state not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
-    end
-
-    it "not valid when required zipcode not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
-    end
-
-    it "not valid when required country not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-
-      expect(order).to_not be_valid
+      it "returns false" do
+        expect(order).to_not be_valid
+      end
     end
   end
 end

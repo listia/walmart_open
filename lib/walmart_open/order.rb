@@ -1,6 +1,7 @@
 require "walmart_open/order_item"
 require "walmart_open/item"
 require "walmart_open/shipping_address"
+require "securerandom"
 
 module WalmartOpen
   class Order

@@ -19,7 +19,7 @@ module WalmartOpen
       calls = @calls[type]
 
       now = Time.now
-      calls.delete_if { |time| now - time > 1 }
+      calls.delete_if { |time| now.to_f - time.to_f >= 1 }
 
       if calls.size >= calls_per_second(type)
         sleep((calls.first + 1) - now)

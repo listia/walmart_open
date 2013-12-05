@@ -5,31 +5,45 @@ require "walmart_open/errors"
 
 describe WalmartOpen::Requests::Token do
   context "#submit" do
-    before do
-      @token_req = WalmartOpen::Requests::Token.new
-      @client = WalmartOpen::Client.new
-      @response = double
-      expect(HTTParty).to receive(:public_send).and_return(@response)
+    let(:client) {WalmartOpen::Client.new}
+    let(:token_req) { WalmartOpen::Requests::Token.new }
+    let(:success_response) { double('success_response', success?: true) }
+    let(:fail_response) { double('fail_response', success?: false) }
+
+    context "when response is success" do
+      before do
+        expect(HTTParty).to receive(:post).and_return(success_response)
+        attrs = {
+          "token_type" => "bearer",
+          "mapi" => "8tbvkxd6gu6zjzp6qbyeewb6",
+          "access_token" => "k5pzg6jqtetygmrkm5y6qqnr",
+          "expires_in" => 600
+        }
+        allow(success_response).to receive(:parsed_response).and_return(attrs)
+        header_attrs = {"date"=> "Sun, 01 Dec 2013 07:25:35 GMT"}
+        allow(success_response).to receive(:headers).and_return(header_attrs)
+      end
+
+      it "get response" do
+        token = token_req.submit(client)
+
+        expect(token.token_type).to eq("bearer")
+        expect(token.access_token).to eq("k5pzg6jqtetygmrkm5y6qqnr")
+        expect(token.time).to eq(Time.parse("Sun, 01 Dec 2013 07:25:35 GMT"))
+      end
     end
 
-    it "succeeds" do
-      expect(@response).to receive(:success?).and_return(true)
-      @attrs = {"token_type"=>"bearer", "mapi"=>"8tbvkxd6gu6zjzp6qbyeewb6", "access_token"=>"k5pzg6jqtetygmrkm5y6qqnr", "expires_in"=>600}
-      expect(@response).to receive(:parsed_response).and_return(@attrs)
-      @header_attrs = {"date"=> "Sun, 01 Dec 2013 07:25:35 GMT"}
-      expect(@response).to receive(:headers).and_return(@header_attrs)
+    context "when response is not success" do
+      before do
+        allow(HTTParty).to receive(:get).and_return(fail_response)
+        allow(fail_response).to receive(:parsed_response).and_return({"errors"=>[{"code"=>403, "message"=>"Account Inactive"}]})
+      end
 
-      token = @token_req.submit(@client)
-      expect(token.token_type).to eq("bearer")
-      expect(token.access_token).to eq("k5pzg6jqtetygmrkm5y6qqnr")
-      expect(token.time).to eq(Time.parse("Sun, 01 Dec 2013 07:25:35 GMT"))
-    end
-
-    it "fails with 403" do
-      expect(@response).to receive(:success?).and_return(false)
-      expect(@response).to receive(:parsed_response).and_return({"errors"=>[{"code"=>403, "message"=>"Account Inactive"}]})
-
-      expect{@token_req.submit(@client)}.to raise_error(WalmartOpen::AuthenticationError)
+      it "get authentication error" do
+        expect{
+          token_req.submit(client)
+        }.to raise_error(WalmartOpen::AuthenticationError)
+      end
     end
   end
 end
