@@ -79,7 +79,6 @@ describe WalmartOpen::Client do
       client = WalmartOpen::Client.new
       request = double
       order_info = double
-
       auth_token = double
 
       expect(WalmartOpen::Requests::PlaceOrder).to receive(:new).and_return(request)

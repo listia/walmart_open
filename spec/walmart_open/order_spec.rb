@@ -3,55 +3,61 @@ require "walmart_open/order"
 
 describe WalmartOpen::Order do
   context "create order" do
-    before do
-      @params = {
-        billing_id:         1,
-        first_name:         "James",
-        last_name:          "Fong",
-        partner_order_id:   "42",
-        phone:              "606-478-0850",
-        partner_order_time: Time.now
+    let(:order_params) do
+      {
+          billing_id:         1,
+          first_name:         "James",
+          last_name:          "Fong",
+          partner_order_id:   "42",
+          phone:              "606-478-0850",
+          partner_order_time: Time.now
       }
-      @order = WalmartOpen::Order.new(@params)
     end
 
-    it "sets value correctly" do
-      expect(@order.shipping_address).to be_nil
-      expect(@order.items).to be_empty
-      expect(@order.billing_id).to eql(@params[:billing_id])
-      expect(@order.first_name).to eql(@params[:first_name])
-      expect(@order.last_name).to eql(@params[:last_name])
-      expect(@order.phone).to eql(@params[:phone])
-      expect(@order.partner_order_id).to eq(@params[:partner_order_id])
-      expect(@order.partner_order_time).to eq(@params[:partner_order_time])
-    end
-
-    context "#add_shipping_address" do
-      it "sets value correctly" do
-        params = {
+    let(:shipping_addr_params) do
+      {
           street1:  "Listia Inc, 200 Blossom Ln",
           street2:  "street2 test",
           city:     "Mountain View",
           state:    "CA",
           zipcode:  "94043",
           country:  "USA"
-        }
-        @order.add_shipping_address(params)
+      }
+    end
 
-        expect(@order.shipping_address).not_to be_nil
+    let(:order) { WalmartOpen::Order.new(order_params) }
+
+    context ".new" do
+      it "sets value correctly" do
+        expect(order.shipping_address).to be_nil
+        expect(order.items).to be_empty
+        expect(order.billing_id).to eql(order_params[:billing_id])
+        expect(order.first_name).to eql(order_params[:first_name])
+        expect(order.last_name).to eql(order_params[:last_name])
+        expect(order.phone).to eql(order_params[:phone])
+        expect(order.partner_order_id).to eq(order_params[:partner_order_id])
+        expect(order.partner_order_time).to eq(order_params[:partner_order_time])
+      end
+    end
+
+    context "#add_shipping_address" do
+      it "sets value correctly" do
+        order.add_shipping_address(shipping_addr_params)
+
+        expect(order.shipping_address).not_to be_nil
       end
     end
 
     context "#add_item" do
       it "adds item object" do
         item = double
-        @order.add_item(item)
-        expect(@order.items).not_to be_empty
+        order.add_item(item)
+        expect(order.items).not_to be_empty
       end
 
       it "adds item by id" do
-        @order.add_item(1, 2.0)
-        expect(@order.items).not_to be_empty
+        order.add_item(1, 2.0)
+        expect(order.items).not_to be_empty
       end
     end
   end

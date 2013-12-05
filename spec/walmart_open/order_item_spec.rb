@@ -12,7 +12,7 @@ describe WalmartOpen::OrderItem do
       expect(order_item.item_price).to eq(item_price)
       expect(order_item.shipping_price).to eq(0)
       expect(order_item.quantity).to eq(1)
-      expect(order_item.valid?).to eq(true)
+      expect(order_item).to be_valid
     end
   end
 end
