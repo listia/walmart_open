@@ -52,7 +52,7 @@ describe WalmartOpen::OrderResults do
   end
 
   context "#initialize" do
-    it "sets value correctly with one order" do
+    it "sets value correctly with one item" do
       res = WalmartOpen::OrderResults.new(order_results_1_item_attrs)
 
       expect(res.order_id).to eq(order_results_1_item_attrs["response"]["orderId"])
@@ -66,7 +66,7 @@ describe WalmartOpen::OrderResults do
       expect(res).not_to be_error
     end
 
-    it "sets value correctly with multiple orders" do
+    it "sets value correctly with multiple items" do
       res = WalmartOpen::OrderResults.new(order_results_2_item_attrs)
 
       expect(res.order_id).to eq(order_results_2_item_attrs["response"]["orderId"])

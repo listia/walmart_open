@@ -12,7 +12,7 @@ describe WalmartOpen::Requests::Token do
 
     context "when response is success" do
       before do
-        expect(HTTParty).to receive(:post).and_return(success_response)
+        allow(HTTParty).to receive(:post).and_return(success_response)
         attrs = {
           "token_type" => "bearer",
           "mapi" => "8tbvkxd6gu6zjzp6qbyeewb6",
