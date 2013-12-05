@@ -6,8 +6,8 @@ require 'walmart_open/version'
 Gem::Specification.new do |spec|
   spec.name          = "walmart_open"
   spec.version       = WalmartOpen::VERSION
-  spec.authors       = ["Ngan Pham"]
-  spec.email         = ["ngan@listia.com"]
+  spec.authors       = ["Ngan Pham", "Xiaoming Lu"]
+  spec.email         = ["ngan@listia.com", "xlu@listia.com"]
   spec.description   = %q{Ruby implementation for Walmart Open API.}
   spec.summary       = %q{Ruby implementation for Walmart Open API}
   spec.homepage      = "https://github.com/listia/walmart_open"
