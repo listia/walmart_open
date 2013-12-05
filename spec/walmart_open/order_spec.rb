@@ -2,69 +2,123 @@ require "spec_helper"
 require "walmart_open/order"
 
 describe WalmartOpen::Order do
-  context "is order valid" do
-    it "when required fields are provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to be_valid
+  context "create order" do
+    let(:order_params) do
+      {
+          billing_id:         1,
+          first_name:         "James",
+          last_name:          "Fong",
+          partner_order_id:   "42",
+          phone:              "606-478-0850",
+          partner_order_time: Time.now
+      }
     end
 
-    it "when required billing_id not provided" do
-      order = WalmartOpen::Order.new({first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
+    let(:shipping_addr_params) do
+      {
+          street1:  "Listia Inc, 200 Blossom Ln",
+          street2:  "street2 test",
+          city:     "Mountain View",
+          state:    "CA",
+          zipcode:  "94043",
+          country:  "USA"
+      }
     end
 
-    it "when required first_name not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
+    let(:order) { WalmartOpen::Order.new(order_params) }
+
+    context ".new" do
+      it "sets value correctly" do
+        expect(order.shipping_address).to be_nil
+        expect(order.items).to be_empty
+        expect(order.billing_id).to eql(order_params[:billing_id])
+        expect(order.first_name).to eql(order_params[:first_name])
+        expect(order.last_name).to eql(order_params[:last_name])
+        expect(order.phone).to eql(order_params[:phone])
+        expect(order.partner_order_id).to eq(order_params[:partner_order_id])
+        expect(order.partner_order_time).to eq(order_params[:partner_order_time])
+      end
     end
 
-    it "when required street1 not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
+    context "#add_shipping_address" do
+      it "sets value correctly" do
+        order.add_shipping_address(shipping_addr_params)
+
+        expect(order.shipping_address).not_to be_nil
+      end
     end
 
-    it "when required city not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", state: "CA", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
+    context "#add_item" do
+      it "adds item object" do
+        item = double
+        order.add_item(item)
+        expect(order.items).not_to be_empty
+      end
+
+      it "adds item by id" do
+        order.add_item(1, 2.0)
+        expect(order.items).not_to be_empty
+      end
+    end
+  end
+
+  context "#valid?" do
+    let(:valid_attrs) do
+      {
+        first_name: "James",
+        billing_id: 1
+      }
     end
 
-    it "when required state not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", zipcode: "94043", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
+    let(:order) do
+      WalmartOpen::Order.new(valid_attrs).tap do |order|
+        order.add_shipping_address({})
+        order.add_item(10371356, 27.94)
+      end
     end
 
-    it "when required zipcode not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", country: "USA"})
-      order.add_item(10371356, 27.94)
-      order.add_item(25174174, 214.99)
-      expect(order).to_not be_valid
+    context "when shipping address is valid" do
+      before do
+        allow(order.shipping_address).to receive(:valid?).and_return(true)
+      end
+
+      context "when order attributes are valid" do
+        context "when items are valid" do
+          it "returns true" do
+            expect(order).to be_valid
+          end
+        end
+
+        context "when items are not valid" do
+          before do
+            order.add_item(12345)
+          end
+
+          it "returns false" do
+            expect(order).to_not be_valid
+          end
+        end
+      end
+
+      context "when order attributes are not valid" do
+        before do
+          order.first_name = nil
+        end
+
+        it "returns false" do
+          expect(order).to_not be_valid
+        end
+      end
     end
 
-    it "when required country not provided" do
-      order = WalmartOpen::Order.new({billing_id: 1, first_name: "James"})
-      order.add_shipping_address({street1: "Listia Inc, 200 Blossom Ln", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
+    context "when shipping address is not valid" do
+      before do
+        allow(order.shipping_address).to receive(:valid?).and_return(false)
+      end
 
-      expect(order).to_not be_valid
+      it "returns false" do
+        expect(order).to_not be_valid
+      end
     end
-
   end
 end

@@ -1,5 +1,7 @@
 module WalmartOpen
   class AuthToken
+    BUFFER_TIME = 30 # seconds
+
     attr_reader :token_type,
                 :access_token,
                 :time,
@@ -13,8 +15,7 @@ module WalmartOpen
     end
 
     def expired?
-      buffer = 30 # seconds
-      Time.now + buffer >= expiration_time
+      Time.now + BUFFER_TIME >= expiration_time
     end
 
     def authorization_header

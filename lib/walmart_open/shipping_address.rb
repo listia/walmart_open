@@ -1,19 +1,36 @@
 module WalmartOpen
   class ShippingAddress
+    API_ATTRIBUTES_MAPPING = {
+        street1:  "street1",
+        street2:  "street2",
+        city:     "city",
+        state:    "state",
+        zipcode:  "zipcode",
+        country:  "country",
+    }
 
-    attr_accessor :street1, :street2, :city, :state, :zipcode, :country
+    API_ATTRIBUTES_MAPPING.each_value do |attr_name|
+      attr_reader attr_name
+    end
+
+    attr_reader :raw_attributes
 
     def initialize(params)
-      @street1 = params[:street1]
-      @street2 = params[:street2]
-      @city = params[:city]
-      @state = params[:state]
-      @zipcode = params[:zipcode]
-      @country = params[:country]
+      @raw_attributes = params
+      extract_known_attributes
     end
 
     def valid?
-      street1 && city && state && zipcode && country
+      !!(street1 && city && state && zipcode && country)
+    end
+
+    private
+    def extract_known_attributes
+      API_ATTRIBUTES_MAPPING.each do |api_attr, attr|
+        next unless raw_attributes.has_key?(api_attr)
+
+        instance_variable_set("@#{attr}", raw_attributes[api_attr])
+      end
     end
   end
 end

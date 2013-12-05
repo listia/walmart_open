@@ -1,6 +1,7 @@
 require "walmart_open/order_item"
 require "walmart_open/item"
 require "walmart_open/shipping_address"
+require "securerandom"
 
 module WalmartOpen
   class Order
@@ -15,6 +16,7 @@ module WalmartOpen
       @billing_id = params[:billing_id]
       @first_name = params[:first_name]
       @last_name = params[:last_name]
+      @phone = params[:phone]
       @partner_order_id = params[:partner_order_id] || "Order-#{Digest::SHA1.hexdigest("#{Time.now.to_i}:#{SecureRandom.hex(16)}")[0..19].upcase}"
       @partner_order_time = params[:partner_order_time] || Time.now
     end

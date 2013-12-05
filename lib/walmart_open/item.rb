@@ -13,27 +13,19 @@ module WalmartOpen
       "size" => "size",
       "color" => "color",
       "modelNumber" => "model_number",
-      "productUrl" => "url"
+      "productUrl" => "url",
+      "availableOnline" => "available_online"
     }
 
     API_ATTRIBUTES_MAPPING.each_value do |attr_name|
       attr_reader attr_name
     end
 
-    attr_reader :raw_attributes, :error
+    attr_reader :raw_attributes
 
     def initialize(attrs)
-      @error = nil
       @raw_attributes = attrs
       extract_known_attributes
-
-      if attrs["errors"]
-        @error = {code: attrs["errors"].first["code"], message: attrs["errors"].first["message"]}
-      end
-    end
-
-    def error?
-      !@error.nil?
     end
 
     private
