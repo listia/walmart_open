@@ -68,8 +68,8 @@ describe WalmartOpen::Requests::PlaceOrder do
     let(:client) { WalmartOpen::Client.new }
     let(:order) { WalmartOpen::Order.new(order_attrs) }
     let(:order_req) { WalmartOpen::Requests::PlaceOrder.new(order) }
-    let(:success_response) { double('success_response', success?: true) }
-    let(:fail_response) { double('fail_response', success?: false) }
+    let(:success_response) { double(success?: true) }
+    let(:fail_response) { double(success?: false) }
 
     before do
       allow(order_req).to receive(:request_options).and_return({})
@@ -122,7 +122,7 @@ describe WalmartOpen::Requests::PlaceOrder do
           })
         end
 
-        it "raise order error" do
+        it "raises order error" do
           expect{order_req.submit(client)}.to raise_error(WalmartOpen::OrderError)
         end
       end
@@ -138,7 +138,7 @@ describe WalmartOpen::Requests::PlaceOrder do
           })
         end
 
-        it "raise authentication error" do
+        it "raises authentication error" do
           expect {
             order_req.submit(client)
           }.to raise_error(WalmartOpen::AuthenticationError)

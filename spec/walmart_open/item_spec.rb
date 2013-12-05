@@ -38,8 +38,9 @@ describe WalmartOpen::Item do
       "availableOnline"         =>  true
     }
   end
-  context "#initialize" do
-    it "sets correct values" do
+
+  context ".new" do
+    it "sets attributes" do
       item = WalmartOpen::Item.new(item_attrs)
 
       WalmartOpen::Item::API_ATTRIBUTES_MAPPING.each do |key, value|

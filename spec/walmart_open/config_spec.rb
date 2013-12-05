@@ -4,7 +4,7 @@ require "walmart_open/client"
 require "walmart_open/errors"
 
 describe WalmartOpen::Config do
-  context "#initialize" do
+  context ".new" do
     it "sets default configs" do
       config = WalmartOpen::Config.new
 

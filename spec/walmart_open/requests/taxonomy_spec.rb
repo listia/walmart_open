@@ -7,8 +7,8 @@ describe WalmartOpen::Requests::Taxonomy do
   context "#submit" do
     let(:client) {WalmartOpen::Client.new}
     let(:taxonomy_req) { WalmartOpen::Requests::Taxonomy.new }
-    let(:success_response) { double('success_response', success?: true) }
-    let(:fail_response) { double('fail_response', success?: false) }
+    let(:success_response) { double(success?: true) }
+    let(:fail_response) { double(success?: false) }
     let(:category_attrs) do
       {
         "categories" => [{
@@ -59,7 +59,7 @@ describe WalmartOpen::Requests::Taxonomy do
         })
       end
 
-      it "raise authentication error" do
+      it "raises authentication error" do
         expect{
           taxonomy_req.submit(client)
         }.to raise_error(WalmartOpen::AuthenticationError)

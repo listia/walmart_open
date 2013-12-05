@@ -2,7 +2,7 @@ require "spec_helper"
 require "walmart_open/search_results"
 
 describe WalmartOpen::SearchResults do
-  context "#initialize" do
+  context ".new" do
     let(:search_result) do
       {
         "query" => "ipod",

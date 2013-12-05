@@ -5,8 +5,8 @@ require "walmart_open/errors"
 
 describe WalmartOpen::Requests::Lookup do
   context "#submit" do
-    let(:success_response) { double('success_response', success?: true) }
-    let(:fail_response) { double('fail_response', success?: false) }
+    let(:success_response) { double(success?: true) }
+    let(:fail_response) { double(success?: false) }
     let(:client) { WalmartOpen::Client.new }
     let(:lookup_req) { WalmartOpen::Requests::Lookup.new(1) }
     let(:lookup_attrs) do
@@ -69,7 +69,7 @@ describe WalmartOpen::Requests::Lookup do
           allow(fail_response).to receive(:parsed_response).and_return({"errors"=>[{"code"=>4002, "message"=>"Invalid itemId"}]})
         end
 
-        it "raise item not found error" do
+        it "raises item not found error" do
           expect{lookup_req.submit(client)}.to raise_error(WalmartOpen::ItemNotFoundError)
         end
       end
@@ -80,7 +80,7 @@ describe WalmartOpen::Requests::Lookup do
           allow(fail_response).to receive(:parsed_response).and_return({"errors"=>[{"code"=>403, "message"=>"Account Inactive"}]})
         end
 
-        it "raise error" do
+        it "raises authentication error" do
           expect {
             lookup_req.submit(client)
           }.to raise_error(WalmartOpen::AuthenticationError)

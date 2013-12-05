@@ -6,8 +6,8 @@ require "walmart_open/errors"
 describe WalmartOpen::Requests::Search do
   context "#submit" do
     let(:client) { WalmartOpen::Client.new }
-    let(:success_response) { double('success_response', success?: true) }
-    let(:fail_response) { double('fail_response', success?: false) }
+    let(:success_response) { double(success?: true) }
+    let(:fail_response) { double(success?: false) }
     let(:search_req) { WalmartOpen::Requests::Search.new("ipod") }
     let(:search_response) do
       {
@@ -75,7 +75,7 @@ describe WalmartOpen::Requests::Search do
                        }]
         })
       end
-      it "raise authentication error" do
+      it "raises authentication error" do
         expect {
           search_req.submit(client)
         }.to raise_error(WalmartOpen::AuthenticationError)

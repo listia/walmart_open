@@ -7,8 +7,8 @@ describe WalmartOpen::Requests::Token do
   context "#submit" do
     let(:client) {WalmartOpen::Client.new}
     let(:token_req) { WalmartOpen::Requests::Token.new }
-    let(:success_response) { double('success_response', success?: true) }
-    let(:fail_response) { double('fail_response', success?: false) }
+    let(:success_response) { double(success?: true) }
+    let(:fail_response) { double(success?: false) }
 
     context "when response is success" do
       before do

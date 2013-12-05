@@ -51,7 +51,7 @@ describe WalmartOpen::OrderResults do
     }
   end
 
-  context "#initialize" do
+  context ".new" do
     it "sets value correctly with one item" do
       res = WalmartOpen::OrderResults.new(order_results_1_item_attrs)
 
