@@ -52,34 +52,4 @@ describe WalmartOpen::Item do
       expect(item.raw_attributes).to eq(item_attrs)
     end
   end
-
-  context "#image_url" do
-    before do
-      @item = WalmartOpen::Item.new(item_attrs)
-    end
-
-    context "when no param" do
-      it "returns large image url" do
-        expect(@item.image_url).to eq(large_image_url)
-      end
-    end
-
-    context "when param is large_image" do
-      it "returns large image url" do
-        expect(@item.image_url("large_image")).to eq(large_image_url)
-      end
-    end
-
-    context "when param is thumbnail_image" do
-      it "returns thumbnail image url" do
-        expect(@item.image_url("thumbnail_image")).to eq(thumbnail_image)
-      end
-    end
-
-    context "when param is medium_image)" do
-      it "returns medium image url" do
-        expect(@item.image_url("medium_image")).to eq(medium_image)
-      end
-    end
-  end
 end

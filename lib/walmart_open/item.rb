@@ -31,10 +31,6 @@ module WalmartOpen
       extract_known_attributes
     end
 
-    def image_url(attr = "large_image")
-      self.send(attr)
-    end
-
     private
 
     def extract_known_attributes
