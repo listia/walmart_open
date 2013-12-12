@@ -2,9 +2,6 @@ require "spec_helper"
 require "walmart_open/item"
 
 describe WalmartOpen::Item do
-  let(:large_image_url) { "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_500X500.jpg" }
-  let(:thumbnail_image) { "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_100X100.jpg" }
-  let(:medium_image) { "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_180X180.jpg" }
   let(:item_attrs) do
     {
       "itemId"                  =>  10371356,
