@@ -87,6 +87,9 @@ item = client.lookup(15076191)
 # item.model_number = ?
 # item.url =  "http://www.walmart.com/ip/Apple-iPod-Touch-8GB-32GB-and-64GB-newest-model/15076191"
 # item.raw_attributes = {"itemId" => 15076191, .....}
+# item.large_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_500X500.jpg"
+# item.thumbnail_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_100X100.jpg"
+# item.medium_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_180X180.jpg"
 
 # when fail: example of item
 # item.error? == true

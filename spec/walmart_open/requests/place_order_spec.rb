@@ -123,7 +123,9 @@ describe WalmartOpen::Requests::PlaceOrder do
         end
 
         it "raises order error" do
-          expect{order_req.submit(client)}.to raise_error(WalmartOpen::OrderError)
+          expect{
+            order_req.submit(client)
+          }.to raise_error(WalmartOpen::OrderError)
         end
       end
 
