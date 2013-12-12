@@ -68,6 +68,7 @@ describe WalmartOpen::Requests::Search do
 
     context "get fail response" do
       before do
+        allow(HTTParty).to receive(:get).and_return(fail_response)
         allow(fail_response).to receive(:parsed_response).and_return({
           "errors" => [{
                            "code" => 403,
