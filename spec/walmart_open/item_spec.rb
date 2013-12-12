@@ -47,7 +47,7 @@ describe WalmartOpen::Item do
     it "sets attributes" do
       item = WalmartOpen::Item.new(item_attrs)
       WalmartOpen::Item::API_ATTRIBUTES_MAPPING.each do |key, value|
-        expect(item.send(value)).to eq(item_attrs[key])
+        expect(item.public_send(value)).to eq(item_attrs[key])
       end
       expect(item.raw_attributes).to eq(item_attrs)
     end
