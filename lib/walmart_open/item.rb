@@ -14,7 +14,10 @@ module WalmartOpen
       "color" => "color",
       "modelNumber" => "model_number",
       "productUrl" => "url",
-      "availableOnline" => "available_online"
+      "availableOnline" => "available_online",
+      "largeImage" => "large_image",
+      "thumbnailImage" => "thumbnail_image",
+      "mediumImage" => "medium_image"
     }
 
     API_ATTRIBUTES_MAPPING.each_value do |attr_name|
@@ -26,6 +29,10 @@ module WalmartOpen
     def initialize(attrs)
       @raw_attributes = attrs
       extract_known_attributes
+    end
+
+    def image_url(attr = "large_image")
+      self.send(attr)
     end
 
     private
