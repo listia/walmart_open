@@ -52,7 +52,7 @@ describe WalmartOpen::Requests::Search do
     end
     context "get success response" do
       before do
-        expect(HTTParty).to receive(:get).and_return(success_response)
+        allow(HTTParty).to receive(:get).and_return(success_response)
         allow(success_response).to receive(:parsed_response).and_return(search_response)
       end
 
