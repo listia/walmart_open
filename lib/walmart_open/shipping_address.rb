@@ -1,23 +1,21 @@
 module WalmartOpen
   class ShippingAddress
-    API_ATTRIBUTES_MAPPING = {
-        street1:  "street1",
-        street2:  "street2",
-        city:     "city",
-        state:    "state",
-        zipcode:  "zipcode",
-        country:  "country",
-    }
-
-    API_ATTRIBUTES_MAPPING.each_value do |attr_name|
-      attr_reader attr_name
-    end
-
-    attr_reader :raw_attributes
+    ATTRIBUTES = [
+        :street1,
+        :street2,
+        :city,
+        :state,
+        :zipcode,
+        :country
+    ]
+    attr_reader *ATTRIBUTES
 
     def initialize(params)
-      @raw_attributes = params
-      extract_known_attributes
+      params = params.each_with_object({}) do |pair, obj|
+        obj[pair.first.to_sym] = pair.last
+      end
+
+      set_attributes(params)
     end
 
     def valid?
@@ -25,11 +23,12 @@ module WalmartOpen
     end
 
     private
-    def extract_known_attributes
-      API_ATTRIBUTES_MAPPING.each do |api_attr, attr|
-        next unless raw_attributes.has_key?(api_attr)
 
-        instance_variable_set("@#{attr}", raw_attributes[api_attr])
+    def set_attributes(attrs)
+      ATTRIBUTES.each do |attr|
+        next unless attrs.include?(attr)
+
+        instance_variable_set("@#{attr}", attrs[attr])
       end
     end
   end

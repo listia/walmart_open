@@ -27,11 +27,20 @@ describe WalmartOpen::ShippingAddress do
     it "sets attributes" do
       shipping_address = WalmartOpen::ShippingAddress.new(valid_attrs)
 
-      WalmartOpen::ShippingAddress::API_ATTRIBUTES_MAPPING.each do |key, value|
-        expect(shipping_address.public_send(value)).to eq(valid_attrs[key])
+      WalmartOpen::ShippingAddress::ATTRIBUTES.each do |attr|
+        expect(shipping_address.public_send(attr)).to eq(valid_attrs[attr])
       end
+    end
 
-      expect(shipping_address.raw_attributes).to eq(valid_attrs)
+    it "accepts string keys" do
+      stringified_valid_attrs = valid_attrs.each_with_object({}) do |pair, obj|
+        obj[pair.first.to_s] = pair.last
+      end
+      shipping_address = WalmartOpen::ShippingAddress.new(stringified_valid_attrs)
+
+      WalmartOpen::ShippingAddress::ATTRIBUTES.each do |attr|
+        expect(shipping_address.public_send(attr)).to eq(valid_attrs[attr])
+      end
     end
   end
 
