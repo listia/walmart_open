@@ -8,11 +8,11 @@ describe WalmartOpen::ShippingAddress do
       last_name:    "Testlastname",
       street1:      "Foo Bar, Maple St.",
       street2:      "Apt #100",
-      "city"    =>  "Mountain View",
+      city:         "Mountain View",
       state:        "CA",
       zipcode:      "94043",
-      "country" =>  "USA",
-      "phone"   =>  "1234567"
+      country:      "USA",
+      phone:        "1234567"
     }
   end
 
@@ -21,7 +21,18 @@ describe WalmartOpen::ShippingAddress do
       shipping_address = WalmartOpen::ShippingAddress.new(valid_attrs)
 
       WalmartOpen::ShippingAddress::ATTRIBUTES.each do |key|
-        expect(shipping_address.public_send(key.to_sym)).to eq(valid_attrs[key] || valid_attrs[key.to_s])
+        expect(shipping_address.public_send(key.to_sym)).to eq(valid_attrs[key])
+      end
+    end
+
+    it "accepts string keys" do
+      stringified_valid_attrs = valid_attrs.each_with_object({}) do |pair, obj|
+        obj[pair.first.to_s] = pair.last
+      end
+      shipping_address = WalmartOpen::ShippingAddress.new(stringified_valid_attrs)
+
+      WalmartOpen::ShippingAddress::ATTRIBUTES.each do |attr|
+        expect(shipping_address.public_send(attr)).to eq(valid_attrs[attr])
       end
     end
   end

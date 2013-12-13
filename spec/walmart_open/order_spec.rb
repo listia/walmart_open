@@ -7,7 +7,7 @@ describe WalmartOpen::Order do
     {
         billing_record_id:       1,
         partner_order_id:       "42",
-        "partner_order_time" => Time.now
+        partner_order_time:     Time.now
     }
   end
 
@@ -16,12 +16,12 @@ describe WalmartOpen::Order do
         first_name:   "Testfirstname",
         last_name:    "Fong",
         street1:      "Listia Inc, 200 Blossom Ln",
-        "street2" =>  "street2 test",
+        street2:      "street2 test",
         city:         "Mountain View",
         state:        "CA",
-        "zipcode" =>  "94043",
+        zipcode:      "94043",
         country:      "USA",
-        "phone"   =>  "606-478-0850"
+        phone:        "606-478-0850"
     }
   end
 
@@ -37,13 +37,31 @@ describe WalmartOpen::Order do
     context ".new" do
       it "sets value correctly" do
         expect(order.billing_record_id).to eql(valid_order_params[:billing_record_id])
-        expect(order.partner_order_time).to eq(valid_order_params["partner_order_time"])
+        expect(order.partner_order_time).to eq(valid_order_params[:partner_order_time])
         expect(order.partner_order_id).to eq(valid_order_params[:partner_order_id])
 
         expect(order.shipping_address).to be_valid
         expect(order.shipping_address.first_name).to eql(valid_order_params[:first_name])
         expect(order.shipping_address.last_name).to eql(valid_order_params[:last_name])
-        expect(order.shipping_address.phone).to eql(valid_order_params["phone"])
+        expect(order.shipping_address.phone).to eql(valid_order_params[:phone])
+
+        expect(order.items).to be_empty
+      end
+
+      it "accepts string keys" do
+        stringified_valid_attrs = valid_order_params.each_with_object({}) do |pair, obj|
+          obj[pair.first.to_s] = pair.last
+        end
+        order = WalmartOpen::Order.new(stringified_valid_attrs)
+
+        expect(order.billing_record_id).to eql(valid_order_params[:billing_record_id])
+        expect(order.partner_order_time).to eq(valid_order_params[:partner_order_time])
+        expect(order.partner_order_id).to eq(valid_order_params[:partner_order_id])
+
+        expect(order.shipping_address).to be_valid
+        expect(order.shipping_address.first_name).to eql(valid_order_params[:first_name])
+        expect(order.shipping_address.last_name).to eql(valid_order_params[:last_name])
+        expect(order.shipping_address.phone).to eql(valid_order_params[:phone])
 
         expect(order.items).to be_empty
       end
@@ -80,7 +98,7 @@ describe WalmartOpen::Order do
     context "when required order params are not present" do
       shared_examples_for "missing required key" do |optional_key|
         before do
-          valid_order_params.delete(optional_key) || valid_order_params.delete(optional_key.to_s)  if optional_key
+          valid_order_params.delete(optional_key) if optional_key
         end
 
         it "returns false" do
