@@ -19,6 +19,7 @@ describe WalmartOpen::ShippingAddress do
   context ".new" do
     it "sets attributes" do
       shipping_address = WalmartOpen::ShippingAddress.new(valid_attrs)
+
       WalmartOpen::ShippingAddress::ATTRIBUTES.each do |key|
         expect(shipping_address.public_send(key.to_sym)).to eq(valid_attrs[key] || valid_attrs[key.to_s])
       end

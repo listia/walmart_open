@@ -35,7 +35,7 @@ describe WalmartOpen::Requests::Token do
 
     context "when response is not success" do
       before do
-        allow(HTTParty).to receive(:get).and_return(fail_response)
+        allow(HTTParty).to receive(:post).and_return(fail_response)
         allow(fail_response).to receive(:parsed_response).and_return({"errors"=>[{"code"=>403, "message"=>"Account Inactive"}]})
       end
 
