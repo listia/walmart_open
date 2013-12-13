@@ -4,12 +4,12 @@ require "walmart_open/shipping_address"
 describe WalmartOpen::ShippingAddress do
   let(:valid_attrs) do
     {
-      street1: "Foo Bar, Maple St.",
-      street2: "Apt #100",
-      city: "Mountain View",
-      state: "CA",
-      zipcode: "94043",
-      country: "USA"
+      street1:      "Foo Bar, Maple St.",
+      street2:      "Apt #100",
+      "city"    =>  "Mountain View",
+      state:        "CA",
+      zipcode:      "94043",
+      "country" =>  "USA"
     }
   end
 
@@ -26,12 +26,9 @@ describe WalmartOpen::ShippingAddress do
   context ".new" do
     it "sets attributes" do
       shipping_address = WalmartOpen::ShippingAddress.new(valid_attrs)
-
-      WalmartOpen::ShippingAddress::API_ATTRIBUTES_MAPPING.each do |key, value|
-        expect(shipping_address.public_send(value)).to eq(valid_attrs[key])
+      WalmartOpen::ShippingAddress::ATTRIBUTES.each do |key|
+        expect(shipping_address.public_send(key.to_sym)).to eq(valid_attrs[key] || valid_attrs[key.to_s])
       end
-
-      expect(shipping_address.raw_attributes).to eq(valid_attrs)
     end
   end
 
@@ -54,7 +51,7 @@ describe WalmartOpen::ShippingAddress do
     context "when not valid" do
       it "returns false for missing required attributes" do
         required_attrs.each do |required_attr|
-          attrs = valid_attrs.reject { |k, _| k == required_attr }
+          attrs = valid_attrs.reject { |k, _| (k == required_attr.to_sym) || (k == required_attr.to_s) }
           expect(WalmartOpen::ShippingAddress.new(attrs)).to_not be_valid
         end
       end
