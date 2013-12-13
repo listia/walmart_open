@@ -3,25 +3,26 @@ require "walmart_open/order"
 
 describe WalmartOpen::Order do
   context "create order" do
+    # mix symbol key and string key for testing purpose
     let(:order_params) do
       {
-          billing_id:         1,
-          first_name:         "James",
-          last_name:          "Fong",
-          partner_order_id:   "42",
-          phone:              "606-478-0850",
-          partner_order_time: Time.now
+          billing_id:             1,
+          "first_name" =>         "James",
+          last_name:              "Fong",
+          partner_order_id:       "42",
+          phone:                  "606-478-0850",
+          "partner_order_time" => Time.now
       }
     end
 
     let(:shipping_addr_params) do
       {
-          street1:  "Listia Inc, 200 Blossom Ln",
-          street2:  "street2 test",
-          city:     "Mountain View",
-          state:    "CA",
-          zipcode:  "94043",
-          country:  "USA"
+          street1:      "Listia Inc, 200 Blossom Ln",
+          "street2" =>  "street2 test",
+          city:         "Mountain View",
+          state:        "CA",
+          "zipcode" =>  "94043",
+          country:      "USA"
       }
     end
 
@@ -32,11 +33,11 @@ describe WalmartOpen::Order do
         expect(order.shipping_address).to be_nil
         expect(order.items).to be_empty
         expect(order.billing_id).to eql(order_params[:billing_id])
-        expect(order.first_name).to eql(order_params[:first_name])
+        expect(order.first_name).to eql(order_params["first_name"])
         expect(order.last_name).to eql(order_params[:last_name])
         expect(order.phone).to eql(order_params[:phone])
         expect(order.partner_order_id).to eq(order_params[:partner_order_id])
-        expect(order.partner_order_time).to eq(order_params[:partner_order_time])
+        expect(order.partner_order_time).to eq(order_params["partner_order_time"])
       end
     end
 
