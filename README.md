@@ -109,25 +109,24 @@ taxonomies = client.taxonomy
 ### Making Commerce API Calls
 ```ruby
 # Placing an Order
-order = WalmartOpen::Order.new({billing_id: 1, first_name: "James",
-                               last_name: "Fong", partner_order_id: "38",
-                               partner_order_time: "16:15:47"})
+order = WalmartOpen::Order.new(billing_id: 1, partner_order_id: "38",
+                               partner_order_time: "16:15:47",
+                               first_name: "James", last_name: "Fong",
+                               street1: "200 Blossom Ln",
+                               street2: "100 Flynn Avenue",
+                               city: "Mountain View",
+                               state: "CA", zipcode: "94043", country: "USA")
 # required fields:
-# billing_id: long, first_name: string
+# billing_id: long, first_name: string, street1: string, city: string,
+  state: string, zipcode: string, country: string, phone: string
 # optional fields:
 # last_name: string
 # partner_order_time: string in format of HH:MM:SS, default to Time.now
 # partner_order_id: string, default to "Order-#{HASH_OF_RAND_AND_ORDER_TIME}"
 
-order.add_shipping_address({street1: "200 Blossom Ln", street2: "100 Flynn Avenue", city: "Mountain View", state: "CA", zipcode: "94043", country: "USA"})
-# required:
-# street1: string, city: string, state: string, zipcode: string, country: string
-# optional:
-# street2: string
-
-# add_item method 1, add_item(item_id, item_price, shipping_price = nil, quantity = 1)
-order.add_item(10371356, 5, 22.94)
-order.add_item(25174174, 214.99)
+# add_item method 1, add_item(item_id, quantity = 1, item_price = nil, shipping_price = nil )
+order.add_item(10371356)
+order.add_item(25174174)
 
 # add_item method 2, add_item(item, quantity = 1)
 order.add_item(client.lookup(10371356))
