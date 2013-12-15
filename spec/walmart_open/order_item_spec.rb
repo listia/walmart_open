@@ -16,7 +16,7 @@ describe WalmartOpen::OrderItem do
       expect(order_item).to be_valid
     end
 
-    context "#valid" do
+    context "#valid?" do
       context "when required field are present" do
         it "returns true" do
           item_id = 10371356

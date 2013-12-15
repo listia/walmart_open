@@ -5,23 +5,23 @@ describe WalmartOpen::Order do
   # mix symbol key and string key for testing purpose
   let(:basic_order_params) do
     {
-        billing_record_id:       1,
-        partner_order_id:       "42",
-        partner_order_time:     Time.now
+      billing_record_id:       1,
+      partner_order_id:       "42",
+      partner_order_time:     Time.now
     }
   end
 
   let(:shipping_addr_params) do
     {
-        first_name:   "Testfirstname",
-        last_name:    "Fong",
-        street1:      "Listia Inc, 200 Blossom Ln",
-        street2:      "street2 test",
-        city:         "Mountain View",
-        state:        "CA",
-        zipcode:      "94043",
-        country:      "USA",
-        phone:        "606-478-0850"
+      first_name:   "Testfirstname",
+      last_name:    "Fong",
+      street1:      "Listia Inc, 200 Blossom Ln",
+      street2:      "street2 test",
+      city:         "Mountain View",
+      state:        "CA",
+      zipcode:      "94043",
+      country:      "USA",
+      phone:        "606-478-0850"
     }
   end
 

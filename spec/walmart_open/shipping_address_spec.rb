@@ -16,10 +16,10 @@ describe WalmartOpen::ShippingAddress do
     }
   end
 
+  let(:shipping_address) { WalmartOpen::ShippingAddress.new(valid_attrs) }
+
   context ".new" do
     it "sets attributes" do
-      shipping_address = WalmartOpen::ShippingAddress.new(valid_attrs)
-
       WalmartOpen::ShippingAddress::ATTRIBUTES.each do |key|
         expect(shipping_address.public_send(key.to_sym)).to eq(valid_attrs[key])
       end
@@ -59,12 +59,20 @@ describe WalmartOpen::ShippingAddress do
         end
       end
 
-      context "when no last name" do
-        it_behaves_like "missing optional key", :last_name
-      end
+      context "missing optional key" do
+        context "when no last name" do
+          it "returns true" do
+            valid_attrs.delete(:last_name)
+            expect(shipping_address).to be_valid
+          end
+        end
 
-      context "when no street2" do
-        it_behaves_like "missing optional key", :street2
+        context "when no street2" do
+          it "returns true" do
+            valid_attrs.delete(:street2)
+            expect(shipping_address).to be_valid
+          end
+        end
       end
     end
 
@@ -81,13 +89,54 @@ describe WalmartOpen::ShippingAddress do
         end
       end
 
-      it_behaves_like "missing required key", :first_name
-      it_behaves_like "missing required key", :street1
-      it_behaves_like "missing required key", :city
-      it_behaves_like "missing required key", :state
-      it_behaves_like "missing required key", :zipcode
-      it_behaves_like "missing required key", :country
-      it_behaves_like "missing required key", :phone
+      context "missing required first_name" do
+        it "returns false" do
+          valid_attrs.delete(:first_name)
+          expect(shipping_address).not_to be_valid
+        end
+      end
+
+      context "missing required street1" do
+        it "returns false" do
+          valid_attrs.delete(:street1)
+          expect(shipping_address).not_to be_valid
+        end
+      end
+
+      context "missing required city" do
+        it "returns false" do
+          valid_attrs.delete(:city)
+          expect(shipping_address).not_to be_valid
+        end
+      end
+
+      context "missing required state" do
+        it "returns false" do
+          valid_attrs.delete(:state)
+          expect(shipping_address).not_to be_valid
+        end
+      end
+
+      context "missing required zipcode" do
+        it "returns false" do
+          valid_attrs.delete(:zipcode)
+          expect(shipping_address).not_to be_valid
+        end
+      end
+
+      context "missing required country" do
+        it "returns false" do
+          valid_attrs.delete(:country)
+          expect(shipping_address).not_to be_valid
+        end
+      end
+
+      context "missing required phone" do
+        it "returns false" do
+          valid_attrs.delete(:phone)
+          expect(shipping_address).not_to be_valid
+        end
+      end
     end
   end
 end
