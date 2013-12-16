@@ -1,12 +1,15 @@
 module WalmartOpen
   class ShippingAddress
     ATTRIBUTES = [
+        :first_name,
+        :last_name,
         :street1,
         :street2,
         :city,
         :state,
         :zipcode,
-        :country
+        :country,
+        :phone
     ]
     attr_reader *ATTRIBUTES
 
@@ -19,7 +22,7 @@ module WalmartOpen
     end
 
     def valid?
-      !!(street1 && city && state && zipcode && country)
+      !!(first_name && street1 && city && state && zipcode && country && phone)
     end
 
     private

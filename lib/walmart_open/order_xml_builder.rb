@@ -32,21 +32,21 @@ module WalmartOpen
 
     def shipping_address(xml)
       xml.shippingAddress do |xml|
-        xml.firstName(order.first_name)
-        xml.lastName(order.last_name)
+        xml.firstName(order.shipping_address.first_name)
+        xml.lastName(order.shipping_address.last_name) if order.shipping_address.last_name
         xml.street1(order.shipping_address.street1)
         xml.street2(order.shipping_address.street2) if order.shipping_address.street2
         xml.city(order.shipping_address.city)
         xml.state(order.shipping_address.state)
         xml.zip(order.shipping_address.zipcode)
         xml.country(order.shipping_address.country)
-        xml.phone(order.phone) if order.phone
+        xml.phone(order.shipping_address.phone)
       end
     end
 
     def payment(xml)
       xml.payment do |xml|
-        xml.billingRecordId(order.billing_id)
+        xml.billingRecordId(order.billing_record_id)
       end
     end
 
@@ -54,8 +54,8 @@ module WalmartOpen
       xml.item do |xml|
         xml.itemId(order_item.item_id)
         xml.quantity(order_item.quantity)
-        xml.itemPrice(order_item.item_price)
-        xml.shippingPrice(order_item.shipping_price)
+        xml.itemPrice(order_item.item_price) if order_item.item_price
+        xml.shippingPrice(order_item.shipping_price) if order_item.shipping_price
       end
     end
   end

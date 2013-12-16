@@ -6,9 +6,8 @@ require "securerandom"
 module WalmartOpen
   class Order
 
-    attr_reader :shipping_address
-    attr_accessor :billing_id, :first_name, :last_name, :partner_order_time,
-                  :partner_order_id, :phone, :items
+    attr_reader :shipping_address, :items
+    attr_accessor :billing_record_id, :partner_order_time, :partner_order_id
 
     def initialize(params)
       params = params.each_with_object({}) do |pair, obj|
@@ -17,25 +16,19 @@ module WalmartOpen
 
       @shipping_address = nil
       @items = []
-      @billing_id = params[:billing_id]
-      @first_name = params[:first_name]
-      @last_name = params[:last_name]
-      @phone = params[:phone]
+      @billing_record_id = params[:billing_record_id]
       @partner_order_id = params[:partner_order_id] || "Order-#{Digest::SHA1.hexdigest("#{Time.now.to_i}:#{SecureRandom.hex(16)}")[0..19].upcase}"
       @partner_order_time = params[:partner_order_time] || Time.now
-    end
-
-    def add_shipping_address(params)
-      @shipping_address = ShippingAddress.new(params)
+      @shipping_address = add_shipping_address(params)
     end
 
     def add_item(item_or_item_id, *args)
       if item_or_item_id.is_a?(Item)
         # add_item(item, quantity = 1)
-        @items << OrderItem.new(item_or_item_id.id, item_or_item_id.price, item_or_item_id.shipping_rate, args[0] || 1)
+        @items << OrderItem.new(item_or_item_id.id, args[0] || 1, item_or_item_id.price, item_or_item_id.shipping_rate)
       else
-        # add_item(item_id, item_price, shipping_price = 0, quantity = 1)
-        @items <<  OrderItem.new(item_or_item_id, args[0], args[1] || 0, args[2] || 1)
+        # add_item(item_id, quantity = 1, item_price = nil, shipping_price = nil)
+        @items <<  OrderItem.new(item_or_item_id, args[0] || 1, args[1], args[2])
       end
     end
 
@@ -45,8 +38,12 @@ module WalmartOpen
 
     private
 
+    def add_shipping_address(params)
+      ShippingAddress.new(params)
+    end
+
     def base_values_valid?
-      billing_id && first_name && partner_order_time && partner_order_id
+      !!(billing_record_id && partner_order_time && partner_order_id)
     end
 
     def items_valid?
