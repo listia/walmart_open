@@ -1,16 +1,22 @@
 module WalmartOpen
   class ShippingAddress
-    ATTRIBUTES = [
-        :first_name,
-        :last_name,
-        :street1,
-        :street2,
-        :city,
-        :state,
-        :zipcode,
-        :country,
-        :phone
+    REQUIRED_ATTRIBUTES = [
+      :first_name,
+      :street1,
+      :city,
+      :state,
+      :zipcode,
+      :country,
+      :phone
     ]
+
+    OPTIONAL_ATTRIBUTES = [
+      :last_name,
+      :street2,
+    ]
+
+    ATTRIBUTES = REQUIRED_ATTRIBUTES + OPTIONAL_ATTRIBUTES
+
     attr_reader *ATTRIBUTES
 
     def initialize(params)
@@ -22,7 +28,9 @@ module WalmartOpen
     end
 
     def valid?
-      !!(first_name && street1 && city && state && zipcode && country && phone)
+      REQUIRED_ATTRIBUTES.map do |attr|
+        public_send(attr).to_s.empty?
+      end.none?
     end
 
     private

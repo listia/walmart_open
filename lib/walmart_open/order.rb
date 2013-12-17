@@ -33,7 +33,8 @@ module WalmartOpen
     end
 
     def valid?
-      base_values_valid? && !shipping_address.nil? && shipping_address.valid? && items_valid?
+      base_values_valid? && items_valid? &&
+        shipping_address && shipping_address.valid?
     end
 
     private
