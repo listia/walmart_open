@@ -22,13 +22,13 @@ module WalmartOpen
       @shipping_address = add_shipping_address(params)
     end
 
-    def add_item(item_or_item_id, *args)
+    def add_item(item_or_item_id, quantity = 1, *args)
       if item_or_item_id.is_a?(Item)
         # add_item(item, quantity = 1)
-        @items << OrderItem.new(item_or_item_id.id, args[0] || 1, item_or_item_id.price, item_or_item_id.shipping_rate)
+        @items << OrderItem.new(item_or_item_id.id, quantity, item_or_item_id.price, item_or_item_id.shipping_rate)
       else
         # add_item(item_id, quantity = 1, item_price = nil, shipping_price = nil)
-        @items <<  OrderItem.new(item_or_item_id, args[0] || 1, args[1], args[2])
+        @items <<  OrderItem.new(item_or_item_id, quantity, args[0], args[1])
       end
     end
 
