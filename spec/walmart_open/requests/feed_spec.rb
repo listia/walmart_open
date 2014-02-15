@@ -16,9 +16,10 @@ describe WalmartOpen::Requests::Feed do
                   }]
     }
   end
+  let(:feed_type) { double(:type) }
+  let(:category_id) { 1 }
 
   context ".new" do
-    let(:feed_type) {double(:type)}
 
     context "when feed type is valid" do
       before do
@@ -33,7 +34,7 @@ describe WalmartOpen::Requests::Feed do
         context "when category_id is provided" do
           it "does not raise error" do
             expect{
-              WalmartOpen::Requests::Feed.new(feed_type, 1)
+              WalmartOpen::Requests::Feed.new(feed_type, category_id)
             }.not_to raise_error
           end
         end
@@ -42,7 +43,7 @@ describe WalmartOpen::Requests::Feed do
           it "does not raise error" do
             expect{
               WalmartOpen::Requests::Feed.new(feed_type)
-            }.to raise_error
+            }.to raise_error(ArgumentError)
           end
         end
       end
@@ -55,7 +56,7 @@ describe WalmartOpen::Requests::Feed do
         context "when category_id is provided" do
           it "does not raise error" do
             expect{
-              WalmartOpen::Requests::Feed.new(feed_type, 1)
+              WalmartOpen::Requests::Feed.new(feed_type, category_id)
             }.not_to raise_error
           end
         end
@@ -77,14 +78,19 @@ describe WalmartOpen::Requests::Feed do
 
       it "raises error" do
         expect{
-          WalmartOpen::Requests::Feed.new(feed_type, 1)
-        }.to raise_error
+          WalmartOpen::Requests::Feed.new(feed_type, category_id)
+        }.to raise_error(ArgumentError)
       end
     end
   end
 
   context "#submit" do
-    let(:feed_request) { WalmartOpen::Requests::Feed.new(:bestsellers, 1) }
+    let(:feed_request) { WalmartOpen::Requests::Feed.new(feed_type, category_id) }
+
+    before do
+      WalmartOpen::Requests::Feed::TYPES.stub(:include?).with(feed_type).and_return(true)
+      WalmartOpen::Requests::Feed::CATEGORY_REQUIRED_TYPES.stub(:include?).with(feed_type).and_return(true)
+    end
 
     context "when response is success" do
       before do
