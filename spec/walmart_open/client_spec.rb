@@ -74,6 +74,20 @@ describe WalmartOpen::Client do
     end
   end
 
+  context "#feed" do
+    it "delegates the request and returns the response" do
+      client = WalmartOpen::Client.new
+      request = double
+      type = double
+      category_id = double
+
+      expect(WalmartOpen::Requests::Feed).to receive(:new).with(type, category_id).and_return(request)
+      expect(client.connection).to receive(:request).with(request)
+
+      client.feed(type, category_id)
+    end
+  end
+
   context "#order" do
     it "delegates the request and returns the response" do
       client = WalmartOpen::Client.new

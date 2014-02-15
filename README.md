@@ -104,6 +104,14 @@ taxonomies = client.taxonomy
 # taxonomies.categories = {"id"=>"5438", "name"=>"Apparel", "path"=>"Apparel", "children"=>[{"id"=>"5438_426265",
   "name"=>"Accessories", "path"=>"Apparel/Accessories", "children"=>[{"id"=>"5438_426265_1043621",
   "name"=>"Bandanas", "path"=>"Apparel/Accessories/Bandanas"}, ...]]}
+
+# Search special feeds (by feed type, category id)
+# Feed type can be :preorder, :bestsellers, :rollback, :clearance, :specialbuy
+# For :preorder case, you do not need to pass param category_id
+items = client.feed(type, category_id)
+#=> Array
+# when success: example of items
+# items = [{"itemId"=>22257971 ...}, ... ]
 ```
 
 ### Making Commerce API Calls

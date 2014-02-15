@@ -5,6 +5,7 @@ require "walmart_open/requests/lookup"
 require "walmart_open/requests/taxonomy"
 require "walmart_open/requests/token"
 require "walmart_open/requests/place_order"
+require "walmart_open/requests/feed"
 
 module WalmartOpen
   class Client
@@ -29,6 +30,10 @@ module WalmartOpen
 
     def taxonomy
       connection.request(Requests::Taxonomy.new)
+    end
+
+    def feed(type, category_id = nil)
+      connection.request(Requests::Feed.new(type, category_id))
     end
 
     def order(order_info)
