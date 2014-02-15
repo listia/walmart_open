@@ -108,7 +108,7 @@ taxonomies = client.taxonomy
 # Search special feeds (by feed type, category id)
 # Feed type can be :preorder, :bestsellers, :rollback, :clearance, :specialbuy
 # For :preorder case, you do not need to pass param category_id
-items = client.feed(type, category_id)
+items = client.feed(:bestsellers, category_id)
 #=> Array
 # when success: example of items
 # items = [{"itemId"=>22257971 ...}, ... ]
