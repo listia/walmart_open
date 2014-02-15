@@ -2,7 +2,11 @@ require "spec_helper"
 require "walmart_open/client"
 require "walmart_open/config"
 require "walmart_open/requests/search"
-require "walmart_open/order"
+require "walmart_open/requests/lookup"
+require "walmart_open/requests/taxonomy"
+require "walmart_open/requests/token"
+require "walmart_open/requests/place_order"
+require "walmart_open/requests/feed"
 
 describe WalmartOpen::Client do
   context ".new" do
@@ -81,7 +85,7 @@ describe WalmartOpen::Client do
       type = double
       category_id = double
 
-      expect(WalmartOpen::Requests::Feed).to receive(:new).with(type, category_id).and_return(request)
+      expect(WalmartOpen::Requests::Feed).to receive(:new).with(type, { category_id: category_id }).and_return(request)
       expect(client.connection).to receive(:request).with(request)
 
       client.feed(type, category_id)

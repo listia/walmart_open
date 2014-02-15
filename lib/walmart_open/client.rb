@@ -33,7 +33,9 @@ module WalmartOpen
     end
 
     def feed(type, category_id = nil)
-      connection.request(Requests::Feed.new(type, category_id))
+      params = {}
+      params[:category_id] = category_id if category_id
+      connection.request(Requests::Feed.new(type, params))
     end
 
     def order(order_info)

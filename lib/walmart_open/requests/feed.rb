@@ -10,25 +10,19 @@ module WalmartOpen
         :clearance,
         :specialbuy
       ]
-      CATEGORY_REQUIRED_TYPES = [
-        :bestsellers,
-        :rollback,
-        :clearance,
-        :specialbuy
-      ]
+      CATEGORY_REQUIRED_TYPES = TYPES - [:preorder]
 
-      def initialize(type, category_id = nil)
+      def initialize(type, params = {})
         unless TYPES.include?(type)
           raise ArgumentError, "Invalid feed type #{type}"
         end
 
-        if category_id
-          self.params = {categoryId: category_id}
-        elsif CATEGORY_REQUIRED_TYPES.include?(type)
-          raise ArgumentError, "Category id is required for the #{type} feed"
+        if !params[:category_id] && CATEGORY_REQUIRED_TYPES.include?(type)
+          raise ArgumentError, "Category id param is required for the #{type} feed"
         end
 
         self.path = "feeds/#{type.to_s}"
+        self.params = params
       end
 
       private
