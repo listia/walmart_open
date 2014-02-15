@@ -106,6 +106,14 @@ taxonomies = client.taxonomy
   "name"=>"Bandanas", "path"=>"Apparel/Accessories/Bandanas"}, ...]]}
 ```
 
+# Special Feeds
+# type can be :preorder, :bestsellers, :rollback, :clearance, :specialbuy
+# for :preorder case, you do not need to pass param category_id
+items = client.feed(type, category_id)
+#=> Array
+# when success, example of bestseller feeds
+# items = [{"itemId"=>22257971 ...}, ... }
+
 ### Making Commerce API Calls
 ```ruby
 # Placing an Order
