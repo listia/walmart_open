@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0.0.beta1"
   spec.add_development_dependency "debugger", "~> 1.6"
   spec.add_development_dependency "timecop", "~> 0.7"
-  spec.add_development_dependency "webmock", "~> 1.16.0"
+  spec.add_development_dependency "webmock", "~> 1.17.0"
 end
