@@ -83,7 +83,7 @@ describe WalmartOpen::Requests::Lookup do
         it "raises authentication error" do
           expect {
             lookup_req.submit(client)
-          }.to raise_error(WalmartOpen::AuthenticationError)
+          }.to raise_error(WalmartOpen::ServerError)
         end
       end
     end

@@ -143,7 +143,7 @@ describe WalmartOpen::Requests::PlaceOrder do
         it "raises authentication error" do
           expect {
             order_req.submit(client)
-          }.to raise_error(WalmartOpen::AuthenticationError)
+          }.to raise_error(WalmartOpen::ServerError)
         end
       end
     end

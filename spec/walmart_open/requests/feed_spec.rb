@@ -118,7 +118,7 @@ describe WalmartOpen::Requests::Feed do
       it "raises authentication error" do
         expect {
           feed_request.submit(client)
-        }.to raise_error(WalmartOpen::AuthenticationError)
+        }.to raise_error(WalmartOpen::ServerError)
       end
     end
   end

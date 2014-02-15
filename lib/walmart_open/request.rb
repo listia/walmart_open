@@ -41,7 +41,7 @@ module WalmartOpen
 
     def verify_response(response)
       unless response.success?
-        raise WalmartOpen::AuthenticationError, response.parsed_response.inspect
+        raise WalmartOpen::ServerError, response.parsed_response.inspect
       end
     end
 

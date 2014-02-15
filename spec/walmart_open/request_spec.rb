@@ -59,7 +59,7 @@ describe WalmartOpen::Request do
         it "raises an error" do
           expect {
             request.submit(client)
-          }.to raise_error(WalmartOpen::AuthenticationError)
+          }.to raise_error(WalmartOpen::ServerError)
         end
       end
     end

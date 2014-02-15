@@ -42,7 +42,7 @@ describe WalmartOpen::Requests::Token do
       it "get authentication error" do
         expect{
           token_req.submit(client)
-        }.to raise_error(WalmartOpen::AuthenticationError)
+        }.to raise_error(WalmartOpen::ServerError)
       end
     end
   end

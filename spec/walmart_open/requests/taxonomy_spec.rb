@@ -63,7 +63,7 @@ describe WalmartOpen::Requests::Taxonomy do
       it "raises authentication error" do
         expect{
           taxonomy_req.submit(client)
-        }.to raise_error(WalmartOpen::AuthenticationError)
+        }.to raise_error(WalmartOpen::ServerError)
       end
     end
   end
