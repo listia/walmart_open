@@ -28,7 +28,9 @@ module WalmartOpen
       private
 
       def parse_response(response)
-        response.parsed_response["items"]
+        response.parsed_response["items"].map do |item_hash|
+          Item.new(item_hash)
+        end
       end
     end
   end

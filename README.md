@@ -70,7 +70,7 @@ res = client.search("ipod")
 
 # Lookup (by item id)
 item = client.lookup(15076191)
-#=> Item
+#=> item is of class WalmartOpen::Item
 # when success: example of item
 # item.error? == false
 # item.id = "15076191"
@@ -110,8 +110,8 @@ taxonomies = client.taxonomy
 # For :preorder case, you do not need to pass param category_id
 items = client.feed(:bestsellers, category_id)
 #=> Array
-# when success: example of items
-# items = [{"itemId"=>22257971 ...}, ... ]
+# when success: example of WalmartOpen::Item items
+# items = [item, ... ]
 ```
 
 ### Making Commerce API Calls
