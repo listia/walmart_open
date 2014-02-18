@@ -98,9 +98,10 @@ describe WalmartOpen::Requests::Feed do
       end
 
       it "succeeds" do
-        results = feed_request.submit(client)
+        items = feed_request.submit(client)
 
-        expect(results).to eq(feed_attrs["items"])
+        expect(items.count).to be(1)
+        expect(items.first.raw_attributes).to eq(feed_attrs["items"].first)
       end
     end
 
