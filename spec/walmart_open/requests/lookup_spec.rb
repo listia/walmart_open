@@ -55,6 +55,7 @@ describe WalmartOpen::Requests::Lookup do
       it "returns response" do
         item = lookup_req.submit(client)
 
+        expect(item).to be_a(WalmartOpen::Item)
         expect(item.raw_attributes).to eq(lookup_attrs)
       end
     end

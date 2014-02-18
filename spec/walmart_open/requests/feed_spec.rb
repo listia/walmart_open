@@ -101,6 +101,7 @@ describe WalmartOpen::Requests::Feed do
         items = feed_request.submit(client)
 
         expect(items.count).to be(1)
+        expect(items.first).to be_a(WalmartOpen::Item)
         expect(items.first.raw_attributes).to eq(feed_attrs["items"].first)
       end
     end
