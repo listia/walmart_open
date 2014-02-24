@@ -70,32 +70,11 @@ res = client.search("ipod")
 
 # Lookup (by item id)
 item = client.lookup(15076191)
-#=> item is of class WalmartOpen::Item
-# when success: example of item
-# item.error? == false
-# item.id = "15076191"
-# item.name = "Apple iPod Touch 4th Generation 32GB with Bonus Accessory Kit"
-# item.price = "189.0"
-# item.upc = nil
-# item.category_node = "3944_96469_164001"
-# item.short_description = "The world's most popular portable gaming device ... "
-# item.long_description = "&lt;br&gt;&lt;b&gt;Apple iPod touch 32GB (4th Gen) ..."
-# item.brand = nil
-# item.shipping_rate = 0.0
-# item.size = nil
-# item.color = "Black"
-# item.model_number = ?
-# item.url =  "http://www.walmart.com/ip/Apple-iPod-Touch-8GB-32GB-and-64GB-newest-model/15076191"
-# item.raw_attributes = {"itemId" => 15076191, .....}
-# item.large_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_500X500.jpg"
-# item.thumbnail_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_100X100.jpg"
-# item.medium_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_180X180.jpg"
-
-# when fail: example of item
-# item.error? == true
-# item.error[:code] = 4002
-# item.error[:message] = "Invalid itemId"
-# item.raw_attributes = {"errors"=>[{"code"=>4002, "message"=>"Invalid itemId"}]}
+#=> item is of class WalmartOpen::Item, see WalmartOpen::Item section for detail
+# When item not found, an error of class WalmartOpen::ItemNotFoundError is thrown,
+  eg: {"errors"=>[{"code"=>4002, "message"=>"Invalid itemId"}]}
+  When walmart api is down, an error of class WalmartOpen::ServerError is thrown,
+  eg: {"errors"=>[{"code"=>504, "message"=>"Gateway Timeout"}]}
 
 # Taxonomy
 taxonomies = client.taxonomy
@@ -110,8 +89,7 @@ taxonomies = client.taxonomy
 # For :preorder case, you do not need to pass param category_id
 items = client.feed(:bestsellers, category_id)
 #=> Array
-# when success: example of WalmartOpen::Item items
-# items = [item, ... ]
+# when success: items is an array of WalmartOpen::Item items
 ```
 
 ### Making Commerce API Calls
@@ -167,6 +145,31 @@ res = client.order(order)
 # res.error[:message] = "Invalid xml"
 # res.raw_attributes = {"errors"=>{"error"=>{"code"=>"10001", "message"=>"Invalid xml"}}}
 ```
+
+# WalmartOpen::Item
+# example of a WalmartOpen::Item item
+# item.id = "15076191"
+# item.name = "Apple iPod Touch 4th Generation 32GB with Bonus Accessory Kit"
+# item.price = "189.0"
+# item.upc = nil
+# item.category_node = "3944_96469_164001"
+# item.short_description = "The world's most popular portable gaming device ... "
+# item.long_description = "&lt;br&gt;&lt;b&gt;Apple iPod touch 32GB (4th Gen) ..."
+# item.brand = nil
+# item.shipping_rate = 0.0
+# item.size = nil
+# item.color = "Black"
+# item.model_number = ?
+# item.url =  "http://www.walmart.com/ip/Apple-iPod-Touch-8GB-32GB-and-64GB-newest-model/15076191"
+# item.raw_attributes = {"itemId" => 15076191, .....}
+# item.large_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_500X500.jpg"
+# item.thumbnail_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_100X100.jpg"
+# item.medium_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_180X180.jpg"
+
+# item.variants returns an array of product ids when a walmart product has
+  variants that user can choose, eg a different color or style. An example:
+# items.variants = [15076191, 15076192]
+# An empty array is returned when a product has no variants.
 
 ### Authentication failure
 In the case of authentication failure during an API call, a

@@ -36,7 +36,8 @@ describe WalmartOpen::Item do
       "clearance"               =>  false,
       "preOrder"                =>  false,
       "stock"                   =>  "Available",
-      "availableOnline"         =>  true
+      "availableOnline"         =>  true,
+      "variants"                =>  [10371356, 10371357]
     }
   end
 
@@ -47,6 +48,25 @@ describe WalmartOpen::Item do
         expect(item.public_send(value)).to eq(item_attrs[key])
       end
       expect(item.raw_attributes).to eq(item_attrs)
+    end
+  end
+
+  context "#variants" do
+    context "when item has variants" do
+      it "returns a array with variants" do
+        item = WalmartOpen::Item.new(item_attrs)
+
+        expect(item.variants).to eq([10371356, 10371357])
+      end
+    end
+
+    context "when item has no variants" do
+      it "returns an empty array" do
+        item_attrs.delete("variants")
+        item = WalmartOpen::Item.new(item_attrs)
+
+        expect(item.variants).to eq([])
+      end
     end
   end
 end
