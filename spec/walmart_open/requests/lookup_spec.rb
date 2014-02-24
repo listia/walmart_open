@@ -41,7 +41,8 @@ describe WalmartOpen::Requests::Lookup do
           "clearance"               =>  false,
           "preOrder"                =>  false,
           "stock"                   =>  "Available",
-          "availableOnline"         =>  true
+          "availableOnline"         =>  true,
+          "variants"                =>  [10371356, 10371357]
       }
     end
 

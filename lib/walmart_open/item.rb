@@ -31,6 +31,10 @@ module WalmartOpen
       extract_known_attributes
     end
 
+    def variants
+      raw_attributes["variants"].to_a
+    end
+
     private
 
     def extract_known_attributes
