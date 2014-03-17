@@ -1,3 +1,5 @@
+require "walmart_open/stock_string"
+
 module WalmartOpen
   class Item
     API_ATTRIBUTES_MAPPING = {
@@ -33,6 +35,12 @@ module WalmartOpen
 
     def variants
       raw_attributes["variants"].to_a
+    end
+
+    def stock
+      if raw_attributes["stock"]
+        @_stock ||= StockString.new(raw_attributes["stock"])
+      end
     end
 
     private

@@ -1,5 +1,6 @@
 require "spec_helper"
 require "walmart_open/item"
+require "walmart_open/stock_string"
 
 describe WalmartOpen::Item do
   let(:item_attrs) do
@@ -67,6 +68,23 @@ describe WalmartOpen::Item do
 
         expect(item.variants).to eq([])
       end
+    end
+  end
+
+  context "#stock" do
+    let(:item) { WalmartOpen::Item.new(item_attrs) }
+
+    it "returns a memoized StockString" do
+      stock = item.stock
+
+      expect(stock).to be_a(WalmartOpen::StockString)
+      expect(item.stock.object_id).to eq(stock.object_id)
+    end
+
+    it "returns nil if stock attribute is nil" do
+      item_attrs.merge!("stock" => nil)
+
+      expect(item.stock).to be_nil
     end
   end
 end
