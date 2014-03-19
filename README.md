@@ -144,7 +144,6 @@ res = client.order(order)
 # res.error[:code] = "10001"
 # res.error[:message] = "Invalid xml"
 # res.raw_attributes = {"errors"=>{"error"=>{"code"=>"10001", "message"=>"Invalid xml"}}}
-```
 
 # WalmartOpen::Item
 # example of a WalmartOpen::Item item
@@ -166,10 +165,17 @@ res = client.order(order)
 # item.thumbnail_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_100X100.jpg"
 # item.medium_image = "http://i.walmartimages.com/i/p/00/80/14/18/71/0080141871195_Color_Burgundy_SW_180X180.jpg"
 
+# item.available? returns true when an item is available online
+# item.stock.available? returns true when item stock is "Available"
+# item.stock.not_available? returns true when item item stock is "Not available"
+# item.stock.few? returns true when item item stock is "Last few items"
+# item.stock.limited? returns true when item item stock is "Limited Supply"
+
 # item.variants returns an array of product ids when a walmart product has
   variants that user can choose, eg a different color or style. An example:
 # items.variants = [15076191, 15076192]
 # An empty array is returned when a product has no variants.
+```
 
 ### Authentication failure
 In the case of authentication failure during an API call, a
