@@ -3,8 +3,6 @@ require "walmart_open/connection_manager"
 require "walmart_open/requests/search"
 require "walmart_open/requests/lookup"
 require "walmart_open/requests/taxonomy"
-require "walmart_open/requests/token"
-require "walmart_open/requests/place_order"
 require "walmart_open/requests/feed"
 
 module WalmartOpen

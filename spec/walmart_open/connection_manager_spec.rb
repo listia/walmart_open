@@ -8,8 +8,7 @@ describe WalmartOpen::ConnectionManager do
   context "#request" do
     let(:client) do
       WalmartOpen::Client.new(
-        product_calls_per_second: 1,
-        commerce_calls_per_second: 1
+        product_calls_per_second: 1
       )
     end
 
@@ -45,12 +44,6 @@ describe WalmartOpen::ConnectionManager do
 
     context "when product request" do
       let(:request) { WalmartOpen::ProductRequest.new }
-
-      include_examples "a request"
-    end
-
-    context "when commerce request" do
-      let(:request) { WalmartOpen::CommerceRequest.new }
 
       include_examples "a request"
     end

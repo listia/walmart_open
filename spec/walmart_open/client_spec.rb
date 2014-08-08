@@ -4,8 +4,6 @@ require "walmart_open/config"
 require "walmart_open/requests/search"
 require "walmart_open/requests/lookup"
 require "walmart_open/requests/taxonomy"
-require "walmart_open/requests/token"
-require "walmart_open/requests/place_order"
 require "walmart_open/requests/feed"
 
 describe WalmartOpen::Client do
@@ -89,22 +87,6 @@ describe WalmartOpen::Client do
       expect(client.connection).to receive(:request).with(request)
 
       client.feed(type, category_id)
-    end
-  end
-
-  context "#order" do
-    it "delegates the request and returns the response" do
-      client = WalmartOpen::Client.new
-      request = double
-      order_info = double
-      auth_token = double
-
-      expect(WalmartOpen::Requests::PlaceOrder).to receive(:new).and_return(request)
-      expect(WalmartOpen::Requests::Token).to receive(:new).and_return(auth_token)
-      expect(client.connection).to receive(:request).with(auth_token).and_return(auth_token)
-      expect(client.connection).to receive(:request).with(request)
-
-      client.order(order_info)
     end
   end
 end
