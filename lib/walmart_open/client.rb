@@ -36,12 +36,6 @@ module WalmartOpen
       connection.request(Requests::Feed.new(type, params))
     end
 
-    def order(order_info)
-      authenticate!
-
-      connection.request(Requests::PlaceOrder.new(order_info))
-    end
-
     private
 
     def authenticate!
