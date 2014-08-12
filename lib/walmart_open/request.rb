@@ -4,7 +4,7 @@ require "walmart_open/errors"
 
 module WalmartOpen
   class Request
-    attr_reader :path, :params
+    attr_accessor :path, :params
 
     def submit(client)
       raise "@path must be specified" unless path
@@ -15,8 +15,6 @@ module WalmartOpen
     end
 
     private
-
-    attr_writer :path, :params
 
     def request_method
       :get
