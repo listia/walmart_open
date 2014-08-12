@@ -1,8 +1,8 @@
-require "walmart_open/product_request"
+require "walmart_open/request"
 
 module WalmartOpen
   module Requests
-    class Feed < ProductRequest
+    class Feed < Request
       TYPES = [
         :preorder,
         :bestsellers,

@@ -1,7 +1,7 @@
 require "spec_helper"
 require "walmart_open/connection_manager"
 require "walmart_open/client"
-require "walmart_open/product_request"
+require "walmart_open/request"
 require "timecop"
 
 describe WalmartOpen::ConnectionManager do
@@ -43,7 +43,7 @@ describe WalmartOpen::ConnectionManager do
     end
 
     context "when product request" do
-      let(:request) { WalmartOpen::ProductRequest.new }
+      let(:request) { WalmartOpen::Request.new }
 
       include_examples "a request"
     end
