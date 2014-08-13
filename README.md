@@ -1,10 +1,10 @@
 # Walmart Open
 
-[Walmart Open](https://developer.walmartlabs.com) is Walmart's official products search and ordering API. There are actually two distinct API endpoints: one for product search and lookup and one for ordering.
+[Walmart Open](https://developer.walmartlabs.com) is Walmart's official products search API.
 
 ## Products API
 
-To use the Products API, you must register for a Walmart Open account and obtain an API key. You can also API calls from their [interacive API tool](https://developer.walmartlabs.com/io-docs).  For documentation can be found here: https://developer.walmartlabs.com/docs.
+To use the Products API, you must register for a Walmart Open account and obtain an API key. You can also make API calls from their [interacive API tool](https://developer.walmartlabs.com/io-docs).  For documentation can be found here: https://developer.walmartlabs.com/docs.
 
 ## Installation
 
