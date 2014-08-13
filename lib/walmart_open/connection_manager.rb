@@ -2,7 +2,7 @@ module WalmartOpen
   class ConnectionManager
     def initialize(client)
       @client = client
-      @calls = {}
+      @calls = []
     end
 
     def request(request_obj)
@@ -14,14 +14,12 @@ module WalmartOpen
     private
 
     def throttle(request_obj)
-      type = request_type(request_obj)
-      @calls[type] ||= []
-      calls = @calls[type]
+      calls = @calls
 
       now = Time.now
       calls.delete_if { |time| now.to_f - time.to_f >= 1 }
 
-      if calls.size >= calls_per_second(type)
+      if calls.size >= calls_per_second
         sleep((calls.first + 1) - now)
       end
 
@@ -32,16 +30,8 @@ module WalmartOpen
       ret_val
     end
 
-    def request_type(request_obj)
-      case request_obj
-        when ProductRequest  then :product
-        when CommerceRequest then :commerce
-        else raise "Unknown request type"
-      end
-    end
-
-    def calls_per_second(type)
-      @client.config.public_send("#{type}_calls_per_second")
+    def calls_per_second
+      @client.config.public_send("product_calls_per_second")
     end
   end
 end

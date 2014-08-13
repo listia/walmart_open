@@ -4,7 +4,7 @@ require "walmart_open/errors"
 
 module WalmartOpen
   class Request
-    attr_reader :path, :params
+    attr_accessor :path, :params
 
     def submit(client)
       raise "@path must be specified" unless path
@@ -16,22 +16,29 @@ module WalmartOpen
 
     private
 
-    attr_writer :path, :params
-
     def request_method
       :get
     end
 
     def build_url(client)
-      raise NotImplementedError, "build_url must be implemented by subclass"
+      url = "https://#{client.config.product_domain}"
+      url << "/#{client.config.product_version}"
+      url << "/#{path}"
+      url << params_to_query_string(build_params(client))
     end
 
     def build_params(client)
-      # noop
+      {
+        format: "json",
+        api_key: client.config.product_api_key
+      }.merge(params || {})
     end
 
+    # Walmart API unofficially supports HTTPS so we rather hit that instead of
+    # HTTP. However, their SSL certificate is unverifiable so we have to tell
+    # HTTParty not to verify (otherwise it will complain).
     def request_options(client)
-      {}
+      { verify: false }
     end
 
     # Subclasses can override this method to return a different response.
