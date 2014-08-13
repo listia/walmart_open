@@ -74,10 +74,6 @@ items = client.feed(:bestsellers, category_id)
 # when success: items is an array of WalmartOpen::Item items
 ```
 
-### Authentication failure
-In the case of authentication failure during an API call, a
-WalmartOpen::AuthenticationError exception will be raised
-
 ## Contributing
 
 1. Fork it
