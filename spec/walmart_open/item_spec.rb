@@ -23,7 +23,7 @@ describe WalmartOpen::Item do
       "overnightShippingRate"   =>  14.97,
       "size"                    =>  "Twin",
       "color"                   =>  "Burgundy",
-      "marketplace"             =>  false,
+      "marketplace"             =>  true,
       "shipToStore"             =>  true,
       "freeShipToStore"         =>  true,
       "modelNumber"             =>  "BKT051166T",

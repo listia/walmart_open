@@ -17,6 +17,7 @@ module WalmartOpen
       "modelNumber" => "model_number",
       "productUrl" => "url",
       "availableOnline" => "available_online",
+      "marketplace" => "marketplace",
       "largeImage" => "large_image",
       "thumbnailImage" => "thumbnail_image",
       "mediumImage" => "medium_image"
