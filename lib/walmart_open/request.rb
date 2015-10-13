@@ -30,7 +30,8 @@ module WalmartOpen
     def build_params(client)
       {
         format: "json",
-        api_key: client.config.product_api_key
+        api_key: client.config.product_api_key,
+        lsPublisherId: client.config.linkshare_id
       }.merge(params || {})
     end
 

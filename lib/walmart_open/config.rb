@@ -6,6 +6,7 @@ module WalmartOpen
                   :product_domain,
                   :product_version,
                   :product_api_key,
+                  :linkshare_id,
                   :product_calls_per_second
 
     def initialize(options = {})
