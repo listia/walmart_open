@@ -2,6 +2,7 @@ require "walmart_open/config"
 require "walmart_open/connection_manager"
 require "walmart_open/requests/search"
 require "walmart_open/requests/lookup"
+require "walmart_open/requests/upc_lookup"
 require "walmart_open/requests/taxonomy"
 require "walmart_open/requests/feed"
 
@@ -23,6 +24,10 @@ module WalmartOpen
 
     def lookup(item_id, params = {})
       connection.request(Requests::Lookup.new(item_id, params))
+    end
+
+    def upc_lookup(upc)
+      connection.request(Requests::UpcLookup.new(upc))
     end
 
     def taxonomy
