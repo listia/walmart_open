@@ -64,6 +64,23 @@ describe WalmartOpen::Client do
     end
   end
 
+  context "#upc_lookup" do
+    it 'generates a lookup request for a UPC' do
+      client = WalmartOpen::Client.new
+      params = double
+      request = double
+      upc = double
+
+      expect(WalmartOpen::Requests::UpcLookup).to receive(:new) do |upc|
+        expect(upc).to eq(upc)
+        request
+      end
+      expect(client.connection).to receive(:request).with(request)
+
+      client.upc_lookup(params)
+    end
+  end
+
   context "#taxonomy" do
     it "delegates the request and returns the response" do
       client = WalmartOpen::Client.new
