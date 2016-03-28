@@ -3,6 +3,7 @@ require "walmart_open/client"
 require "walmart_open/config"
 require "walmart_open/requests/search"
 require "walmart_open/requests/lookup"
+require "walmart_open/requests/upc_lookup"
 require "walmart_open/requests/taxonomy"
 require "walmart_open/requests/feed"
 
@@ -61,6 +62,25 @@ describe WalmartOpen::Client do
       expect(client.connection).to receive(:request).with(request)
 
       client.lookup(item_id, params)
+    end
+  end
+
+  context "#upc_lookup" do
+    it "generates a lookup request for a UPC" do
+      client = WalmartOpen::Client.new
+      params = double
+      request = double
+      upc = double
+
+      expect(WalmartOpen::Requests::UpcLookup).to receive(:new) do |upc_arg, params_arg|
+        expect(upc_arg).to eq(upc)
+        expect(params_arg).to eq(params)
+        request
+      end
+
+      expect(client.connection).to receive(:request).with(request)
+
+      client.upc_lookup(upc, params)
     end
   end
 
