@@ -28,10 +28,18 @@ module WalmartOpen
     end
 
     def build_params(client)
-      {
+      base_params = {
         format: "json",
         api_key: client.config.product_api_key
-      }.merge(params || {})
+      }
+
+      # In order to use affiliate URLs from Walmart, it is necessary to provide
+      # a publisher ID from LinkShare via the lsPublisherId param.
+      if client.config.linkshare_publisher_id
+        base_params[:ls_publisher_id] = client.config.linkshare_publisher_id
+      end
+
+      base_params.merge(params || {})
     end
 
     # Walmart API unofficially supports HTTPS so we rather hit that instead of
