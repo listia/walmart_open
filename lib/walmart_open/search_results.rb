@@ -15,11 +15,7 @@ module WalmartOpen
       # TODO: set the page!
       # @page = ...
 
-      @items = []
-
-      response["items"].each do |item|
-        @items << Item.new(item)
-      end
+      @items = Array(response["items"]).map { |item| Item.new(item) }
     end
   end
 end
