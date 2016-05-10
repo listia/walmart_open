@@ -4,6 +4,7 @@ require "walmart_open/requests/search"
 require "walmart_open/requests/lookup"
 require "walmart_open/requests/upc_lookup"
 require "walmart_open/requests/taxonomy"
+require "walmart_open/requests/trends"
 require "walmart_open/requests/feed"
 
 module WalmartOpen
@@ -32,6 +33,10 @@ module WalmartOpen
 
     def taxonomy
       connection.request(Requests::Taxonomy.new)
+    end
+
+    def trends
+      connection.request(Requests::Trends.new)
     end
 
     def feed(type, category_id = nil)
